@@ -1,0 +1,67 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-bar-chart-o fa-fw"></i>Tecnosystems' Lessons Learned
+        <button type="button" onClick="javascript:new_lesson();" class="btn btn-primary">New Lesson</button>     
+    </div>
+    <nav>
+      <ul class="pagination">
+        <li>
+          {% if questions_list.has_previous %}
+          <a href="javascript:filter_questions({{ questions_list.previous_page_number }})" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+          {% else %}
+            <span aria-hidden="true">&laquo;</span>
+          {% endif %}
+        </li>
+        <li><span class="current">
+                Page {{ questions_list.number }} of {{ questions_list.paginator.num_pages }}.
+            </span></li>
+        <li>
+          {% if questions_list.has_next %}
+          <a href="javascript:filter_questions({{ questions_list.next_page_number }})" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+          {% else %}
+            <span aria-hidden="true">&raquo;</span>
+          {% endif %}
+        </li>
+      </ul>
+    </nav>
+    <div class="panel-body">
+        <ul class="timeline">
+            {% for q in questions_list %}
+            <li class="{% cycle '' 'timeline-inverted' %}">
+                <div class="timeline-badge {% cycle 'warning' 'info' %}"><i class="fa fa-check"></i></div>
+                <div class="timeline-panel">
+                    <div class="timeline-heading">
+                        <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{q.created_date}}</small> {{q.owner.display_name}}
+                        </p>
+                        <h4 class="timeline-title"><a href="javascript:question_detail({{q.question_id}}, 0)">{{q.title}}</a></h4>
+                    </div>
+                    <div class="timeline-body">
+                        <p>{{q.answer_count}} answer(s)</p>
+                        <div id="{{q.question_id}}" class="tag-list">
+                            
+                        </div>
+                        <br>
+                        <script>
+                            $(function() {
+                                // If using Bootstrap 2, be sure to include:
+                                // Tags.bootstrapVersion = "2";
+                                $('#{{q.question_id}}').tags({
+                                    tagData: {{q.tags_array|safe}},
+                                    readOnly: true,
+                                    suggestions:["basic", "suggestions"],
+                                    excludeList:["not", "these", "words"]
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+

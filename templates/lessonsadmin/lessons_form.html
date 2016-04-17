@@ -1,0 +1,100 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h3 class="modal-title" id="myModalLabel">
+	 	{% if lesson %}
+	 		Edit Lesson Learned
+        {% else %}
+    		New Lesson Learned
+        {% endif %}
+	</h3>
+</div>
+
+<div class="modal-body">
+	<form class="form-horizontal" role="form">
+		{% if lesson %}
+		 	<div class="form-group">
+				<label class="control-label col-sm-2" for="number">Lesson No.:</label>
+				<div class="col-sm-10">
+				  <input disabled="true" type="text" class="form-control" id="number">
+				</div>
+			</div>	
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="pubdate">Pub. Date:</label>
+				<div class="col-sm-10">
+				  <input disabled="true"  type="text" class="form-control" id="pubdate">
+				</div>
+			</div>
+        {% endif %}
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="project">Project's Name:</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="project" placeholder="Enter the project's name">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="leader">Project's Leader:</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="leader" placeholder="Enter the project's leader">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="author">Author:</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="author" placeholder="Enter the author">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="role">Role:</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="role" placeholder="Enter the rolename">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="title">Title:</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="title" placeholder="Enter the lesson's title">
+			</div>
+		</div>
+
+		<div class="form-group">
+		  <label class="control-label col-sm-2" for="problem">Problem:</label>
+		  <div class="col-sm-10">
+		  	<textarea class="form-control" rows="5" id="problem"></textarea>
+		  </div>
+		</div>
+
+		<div class="form-group">
+		  <label class="control-label col-sm-2" for="context">Concepts:</label>
+		  <div class="col-sm-10">
+		  	<textarea class="form-control" rows="5" id="context"></textarea>
+		  </div>
+		</div>
+
+		<div class="form-group">
+		  <label class="control-label col-sm-2" for="solution">Solution:</label>
+		  <div class="col-sm-10">
+		  	<textarea class="form-control" rows="5" id="solution"></textarea>
+		  </div>
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	 <button type="button" class="btn btn-default" onclick="javascript:create_lesson();">
+	 	{% if lesson %}
+	 		Update
+        {% else %}
+        	Save
+        {% endif %}
+	 </button>
+	 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+
+<script>
+	$("#problem").Editor();
+	$("#context").Editor();
+	$("#solution").Editor();
+</script>
