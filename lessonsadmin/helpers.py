@@ -2,7 +2,6 @@ from lessonsadmin.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import re
 
-
 PAGE_SIZE=5
 
 def get_lessons_list_with_filter(filter_type, filter_text, page):
@@ -31,7 +30,7 @@ def get_lessons_list_with_filter(filter_type, filter_text, page):
 	filter_p= {"$or": filters_list}
 	print filter_p
 	lessons = []
-	lessons_list = Lesson.objects(__raw__=filter_p).all()
+	lessons_list = Lesson.objects(__raw__=filter_p).order_by('-number')
 	paginator = Paginator(lessons_list, PAGE_SIZE) # Show 25 contacts per page
 	try:
 		lessons = paginator.page(page)
@@ -48,7 +47,7 @@ def get_tags_list_with_filter(filter_type, filter_text, page):
 	filter_p={filter_type: pattern}
 	print filter_p
 	tags = []
-	tags_list = DomainTag.objects(__raw__=filter_p).all()
+	tags_list = DomainTag.objects(__raw__=filter_p).order_by('label')
 	paginator = Paginator(tags_list, PAGE_SIZE) # Show 25 contacts per page
 	try:
 		tags = paginator.page(page)
@@ -56,4 +55,4 @@ def get_tags_list_with_filter(filter_type, filter_text, page):
 		tags = paginator.page(1)
 	except EmptyPage:
 		tags = paginator.page(paginator.num_pages)
-	return tags
+	return sorted(tags, key= lambda t: t.label.lower())

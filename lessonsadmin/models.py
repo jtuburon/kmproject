@@ -5,7 +5,7 @@ import datetime
 
 class DomainTag(Document):
 	uri= URLField(max_length=250, unique=True)
-	label= StringField(max_length=200)
+	label= StringField(max_length=200, unique=True)
 
 # Create your models here.
 class Lesson(Document):
