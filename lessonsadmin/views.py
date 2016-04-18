@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from helpers import *
+
 from lessonsadmin.models import *
 
 # Create your views here.
@@ -24,8 +26,9 @@ def lessons_filter(request):
 	filter_text= request.POST.get('filter_text', '')
 	page= int(request.POST.get('page', '1'))
 
-	lessons= []
-	context = {"lessons_list": lessons}
+	lessons_list= []
+	lessons_list= get_lessons_list_with_filter(filter_type, filter_text, page)
+	context = {"lessons_list": lessons_list}
 	return render(request, 'lessonsadmin/lessons_list.html', context)
 
 def lessons_new(request):

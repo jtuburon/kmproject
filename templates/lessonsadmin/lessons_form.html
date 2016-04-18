@@ -83,13 +83,11 @@
 	</form>
 </div>
 <div class="modal-footer">
-	 <button type="button" class="btn btn-default" onclick="javascript:create_lesson();">
-	 	{% if lesson %}
-	 		Update
-        {% else %}
-        	Save
-        {% endif %}
-	 </button>
+ 	{% if lesson %}
+ 		<button type="button" class="btn btn-default" onclick="javascript:update_lesson();">Update</button>
+    {% else %}
+    	<button type="button" class="btn btn-default" onclick="javascript:create_lesson();">Save</button>
+    {% endif %}
 	 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 </div>
 

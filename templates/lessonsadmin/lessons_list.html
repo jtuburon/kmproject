@@ -6,7 +6,7 @@
     <nav>
       <ul class="pagination">
         <li>
-          {% if questions_list.has_previous %}
+          {% if lessons_list.has_previous %}
           <a href="javascript:filter_questions({{ questions_list.previous_page_number }})" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
@@ -15,11 +15,11 @@
           {% endif %}
         </li>
         <li><span class="current">
-                Page {{ questions_list.number }} of {{ questions_list.paginator.num_pages }}.
+                Page {{ lessons_list.number }} of {{ lessons_list.paginator.num_pages }}.
             </span></li>
         <li>
-          {% if questions_list.has_next %}
-          <a href="javascript:filter_questions({{ questions_list.next_page_number }})" aria-label="Next">
+          {% if lessons_list.has_next %}
+          <a href="javascript:filter_questions({{ lessons_list.next_page_number }})" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
           {% else %}
@@ -30,18 +30,22 @@
     </nav>
     <div class="panel-body">
         <ul class="timeline">
-            {% for q in questions_list %}
+            {% for l in lessons_list %}
             <li class="{% cycle '' 'timeline-inverted' %}">
                 <div class="timeline-badge {% cycle 'warning' 'info' %}"><i class="fa fa-check"></i></div>
                 <div class="timeline-panel">
                     <div class="timeline-heading">
-                        <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{q.created_date}}</small> {{q.owner.display_name}}
+                        <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{l.pub_date}}</small> {{l.author}}
                         </p>
-                        <h4 class="timeline-title"><a href="javascript:question_detail({{q.question_id}}, 0)">{{q.title}}</a></h4>
+                        <h4 class="timeline-title"><a href="javascript:luestion_detail({{l.luestion_id}}, 0)">Lesson No: {{l.number}} - {{l.title}}</a></h4>
                     </div>
                     <div class="timeline-body">
-                        <p>{{q.answer_count}} answer(s)</p>
-                        <div id="{{q.question_id}}" class="tag-list">
+                        <p>
+                        {% autoescape off%}
+                            {{l.problem}}
+                        {% endautoescape %}
+                        </p>
+                        <!--div id="lessontags-{{l.number}}" class="tag-list">
                             
                         </div>
                         <br>
@@ -56,7 +60,7 @@
                                     excludeList:["not", "these", "words"]
                                 });
                             });
-                        </script>
+                        </script-->
                     </div>
                 </div>
             </li>

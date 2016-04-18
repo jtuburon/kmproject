@@ -54,8 +54,10 @@ function create_lesson(){
 	    success: function (response) {
 			console.log(response)
 			if(response.status==1){
-				$('#newLessonModal').modal('hide')
+				$('#newLessonModal').modal('hide');
+				filter_lessons(1);
 			}
+
 	    },
 	    error: function (request, status, err) {
 	    	alert(err);
