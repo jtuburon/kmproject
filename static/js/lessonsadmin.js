@@ -1,18 +1,30 @@
-var timeout= 5 * 60 * 1000;
-
+/*
+-------------------------------------------------
+Lessons Functions
+-------------------------------------------------
+*/
 function info_index(){
     $('#page-wrapper').load('info/main');
 }
 
 function lessons_index(){
     $('#page-wrapper').load('lessons/main', function(){
+    	$('#lessons_filter_text').bind("enterKey",function(e){
+           filter_lessons(1);
+        });
+        $('#lessons_filter_text').keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                $(this).trigger("enterKey");
+            }
+        });
         filter_lessons(1)
     });
 }
 
 function filter_lessons(page){
-	var filter_type= $('#filter_type').val();
-	var filter_text= $('#search_field').val();
+	var filter_type= $('#lessons_filter_type').val();
+	var filter_text= $('#lessons_filter_text').val();
 	data = {filter_type: filter_type, filter_text: filter_text, page: page}
 	$('#lessons_div').load('lessons/filter', data);
 }
@@ -60,7 +72,70 @@ function create_lesson(){
 
 	    },
 	    error: function (request, status, err) {
-	    	alert(err);
+	    	console.log(err);
+	    }
+	});
+}
+
+/*
+-------------------------------------------------
+Tags Functions
+-------------------------------------------------
+*/
+function tags_index(){
+    $('#page-wrapper').load('tags/main', function(){
+    	$('#tags_filter_text').bind("enterKey",function(e){
+           filter_tags(1);
+        });
+        $('#tags_filter_text	').keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                $(this).trigger("enterKey");
+            }
+        });
+        filter_tags(1)
+    });
+}
+
+function filter_tags(page){
+	var filter_text= $('#tags_filter_text').val();
+	data = {filter_text: filter_text, page: page}
+	$('#tags_div').load('tags/filter', data);
+}
+
+function new_tag(){
+	$('#tag_form').html('');
+	$('#tag_form').load('tags/new', function(){
+		if($('#newTagModal')){
+			$('#newTagModal').modal('show')
+		}
+	});
+}
+
+function create_tag(){
+	var label= $('#label').val();
+	var uri= $('#uri').val();
+	
+	data = {
+		label: label, 
+		uri: uri, 
+	};
+	$.ajax({
+	    type: "POST",
+	    url: "tags/create",
+	    dataType: "json",
+	    data: data,
+	    success: function (response) {
+			console.log(response.msg)
+			if(response.status==1){
+				$('#newTagModal').modal('hide');
+				filter_tags(1);
+			}else{
+				$('#modal_error_msg').html(response.msg)
+			}
+	    },
+	    error: function (request, status, err) {
+	    	console.log(err);
 	    }
 	});
 }

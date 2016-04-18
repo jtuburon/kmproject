@@ -3,13 +3,13 @@ from django.db import models
 from mongoengine import *
 import datetime
 
-class LessonTag(EmbeddedDocument):
-	uri= StringField(max_length=250)
+class DomainTag(Document):
+	uri= URLField(max_length=250, unique=True)
 	label= StringField(max_length=200)
 
 # Create your models here.
 class Lesson(Document):
-    number= SequenceField()
+    number= SequenceField(unique=True)
     project= StringField(max_length=200)
     leader= StringField(max_length=200)
     pub_date = DateTimeField(default=datetime.datetime.now, help_text='date published')
@@ -19,4 +19,4 @@ class Lesson(Document):
     problem= StringField()
     context= StringField()
     solution= StringField()
-    tags = ListField(EmbeddedDocumentField(LessonTag))
+    tags = ListField(DomainTag)

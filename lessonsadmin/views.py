@@ -22,7 +22,7 @@ def lessons_main(request):
 
 @csrf_exempt
 def lessons_filter(request):
-	filter_type= int(request.POST.get('filter_type', '0'))
+	filter_type= int(request.POST.get('filter_type', '1'))
 	filter_text= request.POST.get('filter_text', '')
 	page= int(request.POST.get('page', '1'))
 
@@ -58,3 +58,39 @@ def lessons_create(request):
 
 	lesson.save()
 	return JsonResponse({'status': 1, "msg": "Lesson created succesfully"})
+
+
+
+
+def tags_main(request):
+	context = {}
+	return render(request, 'lessonsadmin/tags_main.html', context)
+
+@csrf_exempt
+def tags_filter(request):
+	filter_type= request.POST.get('filter_type', 'label')
+	filter_text= request.POST.get('filter_text', '')
+	page= int(request.POST.get('page', '1'))
+
+	tags_list= []
+	tags_list= get_tags_list_with_filter(filter_type, filter_text, page)
+	context = {"tags_list": tags_list}
+	return render(request, 'lessonsadmin/tags_list.html', context)
+
+def tags_new(request):
+	context = {"tag": None}
+	return render(request, 'lessonsadmin/tags_form.html', context)
+
+@csrf_exempt
+def tags_create(request):
+	label= request.POST.get('label', '')
+	uri= request.POST.get('uri', '')
+
+	tag = DomainTag();
+	tag.label=label
+	tag.uri=uri
+	try:
+		tag.save()	
+		return JsonResponse({'status': 1, "msg": "Tag created succesfully"})
+	except ValidationError, e:
+		return JsonResponse({'status': 0, "msg": "URI is not in valid format"})
