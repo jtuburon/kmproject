@@ -1,6 +1,8 @@
 from lessonsadmin.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import re
+from SPARQLWrapper import SPARQLWrapper, JSON
+
 
 PAGE_SIZE=5
 
@@ -41,13 +43,32 @@ def get_lessons_list_with_filter(filter_type, filter_text, page):
 
 	return lessons
 
-def get_tags_list_with_filter(filter_type, filter_text, page):
-	print filter_text
+
+def get_tags_list_from_fuseki_with_filter(filter_type, filter_text, page):
+	tags = []
 	pattern= re.compile(filter_text, re.IGNORECASE)
 	filter_p={filter_type: pattern}
-	print filter_p
-	tags = []
-	tags_list = DomainTag.objects(__raw__=filter_p).order_by('label')
+
+	
+	sparql = SPARQLWrapper("http://127.0.0.1:3030/j2eedataset/sparql")
+
+	query="""
+		PREFIX owl: <http://www.w3.org/2002/07/owl#>
+		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+		SELECT ?uri ?label
+			{?uri rdf:type owl:NamedIndividual .
+		  	 ?uri rdfs:label ?label
+			}
+	"""
+
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+
+	results = sparql.query().convert()
+
+	tags_list = [DomainTag(label=result["label"]["value"] , uri=result["uri"]["value"] )for result in results["results"]["bindings"]]
+
 	paginator = Paginator(tags_list, PAGE_SIZE) # Show 25 contacts per page
 	try:
 		tags = paginator.page(page)

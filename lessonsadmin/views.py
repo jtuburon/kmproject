@@ -73,7 +73,8 @@ def tags_filter(request):
 	page= int(request.POST.get('page', '1'))
 
 	tags_list= []
-	tags_list= get_tags_list_with_filter(filter_type, filter_text, page)
+	tags_list= get_tags_list_from_fuseki_with_filter(filter_type, filter_text, page)
+	
 	context = {"tags_list": tags_list}
 	return render(request, 'lessonsadmin/tags_list.html', context)
 
