@@ -3,10 +3,10 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import re
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-
 PAGE_SIZE=5
 
 def get_lessons_list_with_filter(filter_type, filter_text, page):
+
 	filter_p={}
 	filters_list=[]
 	pattern= re.compile(filter_text, re.IGNORECASE)
@@ -40,35 +40,32 @@ def get_lessons_list_with_filter(filter_type, filter_text, page):
 		lessons = paginator.page(1)
 	except EmptyPage:
 		lessons = paginator.page(paginator.num_pages)
-
 	return lessons
 
 
 def get_tags_list_from_fuseki_with_filter(filter_type, filter_text, page):
+	PAGE_SIZE=15
 	tags = []
-	pattern= re.compile(filter_text, re.IGNORECASE)
-	filter_p={filter_type: pattern}
-
-	
 	sparql = SPARQLWrapper("http://127.0.0.1:3030/j2eedataset/sparql")
-
 	query="""
 		PREFIX owl: <http://www.w3.org/2002/07/owl#>
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-		SELECT ?uri ?label
+		SELECT DISTINCT ?uri ?label
 			{?uri rdf:type owl:NamedIndividual .
 		  	 ?uri rdfs:label ?label
+		  	 FILTER regex(str(?label), '%s', 'i')
 			}
-	"""
-
+		ORDER BY ASC(lcase(?label))
+	""" % filter_text
 	sparql.setQuery(query)
 	sparql.setReturnFormat(JSON)
 
 	results = sparql.query().convert()
 
 	tags_list = [DomainTag(label=result["label"]["value"] , uri=result["uri"]["value"] )for result in results["results"]["bindings"]]
-
+	#tags_list= sorted(tags_list, key= lambda t: t.label.lower())
+	
 	paginator = Paginator(tags_list, PAGE_SIZE) # Show 25 contacts per page
 	try:
 		tags = paginator.page(page)
@@ -76,4 +73,4 @@ def get_tags_list_from_fuseki_with_filter(filter_type, filter_text, page):
 		tags = paginator.page(1)
 	except EmptyPage:
 		tags = paginator.page(paginator.num_pages)
-	return sorted(tags, key= lambda t: t.label.lower())
+	return tags
