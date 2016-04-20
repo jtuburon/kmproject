@@ -118,10 +118,16 @@ def lessons_add_tag(request):
 def lessons_remove_tag(request):
 	lesson_id= request.POST.get('lesson_id', 0)
 	uri= request.POST.get('tag[uri]')
+	print uri
 	l= Lesson.objects.get(number=lesson_id)
 	if l != None:
+		print l.tags
+		map={}
 		for t in l.tags:
-			if t.uri==uri:
-				l.tags.remove(t)
+			map[t.uri]=t
+		del map[uri]
+		print "VALUES"
+		print map.values()
+		l.tags= map.values()
 		l.save()
 	return JsonResponse({'status': 1, "msg": "Tag added succesfully"})
