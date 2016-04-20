@@ -1,20 +1,25 @@
 <script>
+
+
     var typeaheadSource = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: {
-        url: 'tags/list',
-        filter: function(list) {
-            return $.map(list, function(tag) {
-                return { label: tag.label, uri: tag.uri}; });
-            }
-        },
+        identify: function(tag) { return tag.label; },
+        local: [],
         limit: 15,
         name: 'typeaheadSource',
         ttl: 0,
         'cache': false
     });
-    typeaheadSource.initialize();
+    typeaheadSource.initialize(true);
+    $.get( "tags/list", 
+        function( data ) {
+            $.each(data, function(i, tag){
+                typeaheadSource.add(tag);
+            });
+            
+        }
+    );
     console.log(typeaheadSource);
 </script>
 
@@ -65,18 +70,8 @@
                             {{l.problem}}
                         {% endautoescape %}
                         </p>
-                        <!--div id="lessontags-{{l.number}}"></div>
-                        <script>
-                            $(function() {
-                                $('#lessontags-{{l.number}}').tags({
-                                  suggestions: [{"text""data":"123"}],
-                                  tagData: ["india", "juliett"],
-                                  caseInsensitive: true
-                                });
-                            });
-                        </script-->
-
-                        <input id="lessontags-{{l.number}}" type="text" value="" data-role="tagsinput"/>
+                        
+                        <input id="lessontags-{{l.number}}" type="text" value="" data-role="tagsinput"></input>
                         {% autoescape off%}
                         <script>
                             $('#lessontags-{{l.number}}').tagsinput({
@@ -85,10 +80,57 @@
                                 displayKey: 'label',
                                 valueKey: 'label',
                                 source: typeaheadSource.ttAdapter(),
-                                
                                 templates: tagSuggestionTemplate,
-                                engine: Hogan
+                                engine: Hogan,
                               }
+                            });
+
+                            $('#lessontags-{{l.number}}').on('beforeItemAdd', function(event) {
+                                var t_key = event.item
+                                var t=typeaheadSource.get(t_key)[0];
+                                console.log(t);
+                                
+                                $.ajax({
+                                    url: 'lessons/add_tag',
+                                    method: 'POST',
+                                    data: {"lesson_id": {{l.number}} , "tag": t},
+                                    success: function(response) {
+                                        console.log(response);
+                                        if (response.failure) {
+                                            //$('#tags-input').tagsinput('remove', t_key, {preventPost: true});
+                                            event.cancel= true;
+                                        }
+                                    }, 
+                                    error: function(error){
+                                        console.log(error);
+                                        event.cancel= true;
+                                    }
+                                });
+                                
+                            });
+
+                            $('#lessontags-{{l.number}}').on('beforeItemRemove', function(event) {
+                                var t_key = event.item
+                                var t=typeaheadSource.get(t_key)[0];
+                                console.log(t);
+                                
+                                $.ajax({
+                                    url: 'lessons/remove_tag',
+                                    method: 'POST',
+                                    data: {"lesson_id": {{l.number}} , "tag": t},
+                                    success: function(response) {
+                                        console.log(response);
+                                        if (response.failure) {
+                                            //$('#tags-input').tagsinput('remove', t_key, {preventPost: true});
+                                            event.cancel= true;
+                                        }
+                                    }, 
+                                    error: function(error){
+                                        console.log(error);
+                                        event.cancel= true;
+                                    }
+                                });
+                                
                             });
                         </script>
                         {% endautoescape %}

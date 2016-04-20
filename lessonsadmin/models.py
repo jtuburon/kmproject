@@ -3,9 +3,9 @@ from django.db import models
 from mongoengine import *
 import datetime
 
-class DomainTag(Document):
-	uri= URLField(max_length=250, unique=True)
-	label= StringField(max_length=200, unique=True)
+class DomainTag(EmbeddedDocument):
+    uri= URLField(max_length=250, unique=True)
+    label= StringField(max_length=200, unique=True)
 
 # Create your models here.
 class Lesson(Document):
@@ -19,4 +19,4 @@ class Lesson(Document):
     problem= StringField()
     context= StringField()
     solution= StringField()
-    tags = ListField(DomainTag)
+    tags = ListField(EmbeddedDocumentField(DomainTag))

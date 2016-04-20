@@ -10,6 +10,8 @@ urlpatterns = [
     url(r'^lessons/filter$', views.lessons_filter, name='lessons_filter'),
     url(r'^lessons/new$', views.lessons_new, name='lessons_new'),
     url(r'^lessons/create$', views.lessons_create, name='lessons_create'),
+    url(r'^lessons/add_tag$', views.lessons_add_tag, name='lessons_add_tag'),
+    url(r'^lessons/remove_tag$', views.lessons_remove_tag, name='lessons_remove_tag'),
 
     url(r'^tags/main$', views.tags_main, name='tags_main'),
     url(r'^tags/filter$', views.tags_filter, name='tags_filter'),

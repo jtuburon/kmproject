@@ -36,6 +36,7 @@ def lessons_new(request):
 	context = {"lesson": None}
 	return render(request, 'lessonsadmin/lessons_form.html', context)
 
+
 @csrf_exempt
 def lessons_create(request):
 	project= request.POST.get('project', '')
@@ -99,3 +100,28 @@ def tags_create(request):
 		return JsonResponse({'status': 1, "msg": "Tag created succesfully"})
 	except ValidationError, e:
 		return JsonResponse({'status': 0, "msg": "URI is not in valid format"})
+
+@csrf_exempt
+def lessons_add_tag(request):
+	lesson_id= request.POST.get('lesson_id', 0)
+	uri= request.POST.get('tag[uri]')
+	label= request.POST.get('tag[label]')
+	l= Lesson.objects.get(number=lesson_id)
+	if l != None:
+		print l.tags
+		ed = DomainTag(label= label, uri= uri)
+		l.tags.append(ed)
+		l.save()
+	return JsonResponse({'status': 1, "msg": "Tag added succesfully"})
+
+@csrf_exempt
+def lessons_remove_tag(request):
+	lesson_id= request.POST.get('lesson_id', 0)
+	uri= request.POST.get('tag[uri]')
+	l= Lesson.objects.get(number=lesson_id)
+	if l != None:
+		for t in l.tags:
+			if t.uri==uri:
+				l.tags.remove(t)
+		l.save()
+	return JsonResponse({'status': 1, "msg": "Tag added succesfully"})
