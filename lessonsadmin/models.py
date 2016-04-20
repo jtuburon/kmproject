@@ -3,6 +3,8 @@ from django.db import models
 from mongoengine import *
 import datetime
 
+
+
 class DomainTag(EmbeddedDocument):
     uri= URLField(max_length=250, unique=True)
     label= StringField(max_length=200, unique=True)

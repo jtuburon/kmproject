@@ -1,6 +1,5 @@
+{% load lessons_extras %}
 <script>
-
-
     var typeaheadSource = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -71,7 +70,7 @@
                         {% endautoescape %}
                         </p>
                         
-                        <input id="lessontags-{{l.number}}" type="text" value="" data-role="tagsinput"></input>
+                        <input id="lessontags-{{l.number}}" type="text" value="{% tagslabels l %}" data-role="tagsinput"></input>
                         {% autoescape off%}
                         <script>
                             $('#lessontags-{{l.number}}').tagsinput({
