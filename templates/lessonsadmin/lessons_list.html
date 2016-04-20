@@ -6,7 +6,7 @@
         url: 'tags/list',
         filter: function(list) {
             return $.map(list, function(tag) {
-                return { label: tag.label, uri: tag.uri, html: tag.label+"-" + tag.uri}; });
+                return { label: tag.label, uri: tag.uri}; });
             }
         },
         limit: 15,
@@ -86,12 +86,8 @@
                                 valueKey: 'label',
                                 source: typeaheadSource.ttAdapter(),
                                 
-                                /*
-                                templates: {
-                                    suggestion: Handlebars.compile('<div><strong>{{label}} </strong>-{{uri}}</div>')
-                                },
+                                templates: tagSuggestionTemplate,
                                 engine: Hogan
-                                */
                               }
                             });
                         </script>

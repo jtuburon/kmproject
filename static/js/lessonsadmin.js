@@ -140,6 +140,8 @@ function create_tag(){
 	});
 }
 
+var tagSuggestionTemplate= {suggestion: Handlebars.compile('<div><strong>{{label}}</strong><br>-{{uri}}</div>')};
+
 /*
 function question_detail(question_id, ner_id){
     $('#page-wrapper').load('question/detail/'+ question_id+"/"+ ner_id);

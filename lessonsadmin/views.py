@@ -61,8 +61,6 @@ def lessons_create(request):
 	return JsonResponse({'status': 1, "msg": "Lesson created succesfully"})
 
 
-
-
 def tags_main(request):
 	context = {}
 	return render(request, 'lessonsadmin/tags_main.html', context)
@@ -80,7 +78,6 @@ def tags_filter(request):
 	return render(request, 'lessonsadmin/tags_list.html', context)
 
 def tags_list(request):
-	tags_list= [ "Amsterdam",  "London",   "Paris",  "Washington",  "New York",  "Los Angeles",  "Kinshasa"]
 	tags_list= get_tags_list_from_fuseki()
 	return JsonResponse(tags_list, safe=False)
 	
