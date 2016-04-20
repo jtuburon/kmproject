@@ -1,3 +1,23 @@
+<script>
+    var typeaheadSource = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: {
+        url: 'tags/list',
+        filter: function(list) {
+            return $.map(list, function(tag) {
+                return { label: tag.label, uri: tag.uri, html: tag.label+"-" + tag.uri}; });
+            }
+        },
+        limit: 15,
+        name: 'typeaheadSource',
+        ttl: 0,
+        'cache': false
+    });
+    typeaheadSource.initialize();
+    console.log(typeaheadSource);
+</script>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <i class="fa fa-bar-chart-o fa-fw"></i>Tecnosystems' Lessons Learned
@@ -45,22 +65,37 @@
                             {{l.problem}}
                         {% endautoescape %}
                         </p>
-                        <!--div id="lessontags-{{l.number}}" class="tag-list">
-                            
-                        </div>
-                        <br>
+                        <!--div id="lessontags-{{l.number}}"></div>
                         <script>
                             $(function() {
-                                // If using Bootstrap 2, be sure to include:
-                                // Tags.bootstrapVersion = "2";
-                                $('#{{q.question_id}}').tags({
-                                    tagData: {{q.tags_array|safe}},
-                                    readOnly: true,
-                                    suggestions:["basic", "suggestions"],
-                                    excludeList:["not", "these", "words"]
+                                $('#lessontags-{{l.number}}').tags({
+                                  suggestions: [{"text""data":"123"}],
+                                  tagData: ["india", "juliett"],
+                                  caseInsensitive: true
                                 });
                             });
                         </script-->
+
+                        <input id="lessontags-{{l.number}}" type="text" value="" data-role="tagsinput"/>
+                        {% autoescape off%}
+                        <script>
+                            $('#lessontags-{{l.number}}').tagsinput({
+                              typeaheadjs: {
+                                name: 'typeaheadSource',
+                                displayKey: 'label',
+                                valueKey: 'label',
+                                source: typeaheadSource.ttAdapter(),
+                                
+                                /*
+                                templates: {
+                                    suggestion: Handlebars.compile('<div><strong>{{label}} </strong>-{{uri}}</div>')
+                                },
+                                engine: Hogan
+                                */
+                              }
+                            });
+                        </script>
+                        {% endautoescape %}
                     </div>
                 </div>
             </li>

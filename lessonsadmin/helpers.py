@@ -74,3 +74,23 @@ def get_tags_list_from_fuseki_with_filter(filter_type, filter_text, page):
 	except EmptyPage:
 		tags = paginator.page(paginator.num_pages)
 	return tags
+
+def get_tags_list_from_fuseki():
+	PAGE_SIZE=15
+	tags = []
+	sparql = SPARQLWrapper("http://127.0.0.1:3030/j2eedataset/sparql")
+	query="""
+		PREFIX owl: <http://www.w3.org/2002/07/owl#>
+		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+		SELECT DISTINCT ?uri ?label
+			{?uri rdf:type owl:NamedIndividual .
+		  	 ?uri rdfs:label ?label
+			}
+		ORDER BY ASC(lcase(?label))
+	"""
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+	results = sparql.query().convert()
+	tags_list = [{"label": result["label"]["value"] , "uri":result["uri"]["value"]} for result in results["results"]["bindings"]]
+	return tags_list

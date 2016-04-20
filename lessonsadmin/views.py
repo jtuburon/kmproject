@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 
 from helpers import *
 
@@ -77,6 +78,12 @@ def tags_filter(request):
 	
 	context = {"tags_list": tags_list}
 	return render(request, 'lessonsadmin/tags_list.html', context)
+
+def tags_list(request):
+	tags_list= [ "Amsterdam",  "London",   "Paris",  "Washington",  "New York",  "Los Angeles",  "Kinshasa"]
+	tags_list= get_tags_list_from_fuseki()
+	return JsonResponse(tags_list, safe=False)
+	
 
 def tags_new(request):
 	context = {"tag": None}
