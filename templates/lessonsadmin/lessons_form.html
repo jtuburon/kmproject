@@ -1,6 +1,6 @@
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h3 class="modal-title" id="myModalLabel">
+	<h3 class="modal-title" id="lessonModalLabel">
 	 	{% if lesson %}
 	 		Edit Lesson Learned
         {% else %}
@@ -15,48 +15,48 @@
 		 	<div class="form-group">
 				<label class="control-label col-sm-2" for="number">Lesson No.:</label>
 				<div class="col-sm-10">
-				  <input disabled="true" type="text" class="form-control" id="number">
+				  <input disabled="true" type="text" class="form-control" id="number" value="{{lesson.number}}">
 				</div>
 			</div>	
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="pubdate">Pub. Date:</label>
 				<div class="col-sm-10">
-				  <input disabled="true"  type="text" class="form-control" id="pubdate">
+				  <input disabled="true"  type="text" class="form-control" id="pubdate" value="{{lesson.pub_date}}">
 				</div>
 			</div>
         {% endif %}
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="project">Project's Name:</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="project" placeholder="Enter the project's name">
+			  <input type="text" class="form-control" id="project" placeholder="Enter the project's name" value="{{lesson.project}}">
 			</div>
 		</div>
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="leader">Project's Leader:</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="leader" placeholder="Enter the project's leader">
+			  <input type="text" class="form-control" id="leader" placeholder="Enter the project's leader" value="{{lesson.leader}}">
 			</div>
 		</div>
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="author">Author:</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="author" placeholder="Enter the author">
+			  <input type="text" class="form-control" id="author" placeholder="Enter the author" value="{{lesson.author}}">
 			</div>
 		</div>
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="role">Role:</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="role" placeholder="Enter the rolename">
+			  <input type="text" class="form-control" id="role" placeholder="Enter the rolename" value="{{lesson.role}}">
 			</div>
 		</div>
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="title">Title:</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="title" placeholder="Enter the lesson's title">
+			  <input type="text" class="form-control" id="title" placeholder="Enter the lesson's title" value="{{lesson.title}}">
 			</div>
 		</div>
 
@@ -95,4 +95,7 @@
 	$("#problem").Editor();
 	$("#context").Editor();
 	$("#solution").Editor();
+	$("#problem").Editor("setText", "{{lesson.problem}}");
+	$("#context").Editor("setText", "{{lesson.context}}");
+	$("#solution").Editor("setText", "{{lesson.solution}}");
 </script>

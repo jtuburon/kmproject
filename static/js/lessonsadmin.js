@@ -32,8 +32,8 @@ function filter_lessons(page){
 function new_lesson(){
 	$('#lesson_form').html('');
 	$('#lesson_form').load('lessons/new', function(){
-		if($('#newLessonModal')){
-			$('#newLessonModal').modal('show')
+		if($('#lessonModal')){
+			$('#lessonModal').modal('show')
 		}
 	});
 }
@@ -66,7 +66,7 @@ function create_lesson(){
 	    success: function (response) {
 			console.log(response)
 			if(response.status==1){
-				$('#newLessonModal').modal('hide');
+				$('#lessonModal').modal('hide');
 				filter_lessons(1);
 			}
 
@@ -77,6 +77,56 @@ function create_lesson(){
 	});
 }
 
+function lesson_edit(lesson_id){
+	data= {lesson_id: lesson_id};
+    $('#lesson_form').html('');
+	$('#lesson_form').load('lessons/edit', data,  function(){
+		if($('#lessonModal')){
+			$('#lessonModal').modal('show')
+		}
+	});
+}
+
+function update_lesson(){
+	var lesson_id= $('#number').val();
+	var project= $('#project').val();
+	var leader= $('#leader').val();
+	var author= $('#author').val();
+	var role= $('#role').val();
+	var title= $('#title').val();
+	var problem= $('#problem').Editor("getText");
+	var context= $('#context').Editor("getText");
+	var solution= $('#solution').Editor("getText");
+	
+	data = {
+		lesson_id: lesson_id,
+		project: project, 
+		leader: leader, 
+		author: author, 
+		role: role, 
+		title: title, 
+		problem: problem, 
+		context: context, 
+		solution: solution
+	};
+	$.ajax({
+	    type: "POST",
+	    url: "lessons/update",
+	    dataType: "json",
+	    data: data,
+	    success: function (response) {
+			console.log(response)
+			if(response.status==1){
+				$('#lessonModal').modal('hide');
+				filter_lessons(1);
+			}
+
+	    },
+	    error: function (request, status, err) {
+	    	console.log(err);
+	    }
+	});
+}
 /*
 -------------------------------------------------
 Tags Functions

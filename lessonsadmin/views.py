@@ -61,6 +61,42 @@ def lessons_create(request):
 	lesson.save()
 	return JsonResponse({'status': 1, "msg": "Lesson created succesfully"})
 
+@csrf_exempt
+def lessons_edit(request):
+	lesson_id= request.POST.get('lesson_id', 0)
+	lesson = Lesson.objects.get(number=lesson_id) if lesson_id>0 else None
+	context = {"lesson": lesson}
+	return render(request, 'lessonsadmin/lessons_form.html', context)
+
+
+@csrf_exempt
+def lessons_update(request):
+	project= request.POST.get('project', '')
+	leader= request.POST.get('leader', '')
+	author= request.POST.get('author', '')
+	role= request.POST.get('role', '')
+	title= request.POST.get('title', '')
+	problem= request.POST.get('problem', '')
+	context= request.POST.get('context', '')
+	solution= request.POST.get('solution', '')
+
+	lesson_id= request.POST.get('lesson_id', 0)
+	lesson = Lesson.objects.get(number=lesson_id) if lesson_id>0 else None
+	print lesson_id
+	if lesson != None:
+		lesson.project=project
+		lesson.leader=leader
+		lesson.author=author
+		lesson.role=role
+		lesson.title=title
+		lesson.problem=problem
+		lesson.context=context
+		lesson.solution=solution
+
+		lesson.save()
+		return JsonResponse({'status': 1, "msg": "Lesson updated succesfully"})
+	else:
+		return JsonResponse({'status': 0, "msg": "Lesson doesn't exist"})
 
 def tags_main(request):
 	context = {}
@@ -81,25 +117,6 @@ def tags_filter(request):
 def tags_list(request):
 	tags_list= get_tags_list_from_fuseki()
 	return JsonResponse(tags_list, safe=False)
-	
-
-def tags_new(request):
-	context = {"tag": None}
-	return render(request, 'lessonsadmin/tags_form.html', context)
-
-@csrf_exempt
-def tags_create(request):
-	label= request.POST.get('label', '')
-	uri= request.POST.get('uri', '')
-
-	tag = DomainTag();
-	tag.label=label
-	tag.uri=uri
-	try:
-		tag.save()	
-		return JsonResponse({'status': 1, "msg": "Tag created succesfully"})
-	except ValidationError, e:
-		return JsonResponse({'status': 0, "msg": "URI is not in valid format"})
 
 @csrf_exempt
 def lessons_add_tag(request):
@@ -130,4 +147,4 @@ def lessons_remove_tag(request):
 		print map.values()
 		l.tags= map.values()
 		l.save()
-	return JsonResponse({'status': 1, "msg": "Tag added succesfully"})
+	return JsonResponse({'status': 1, "msg": "Tag removed succesfully"})

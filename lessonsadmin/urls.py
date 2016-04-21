@@ -12,10 +12,10 @@ urlpatterns = [
     url(r'^lessons/create$', views.lessons_create, name='lessons_create'),
     url(r'^lessons/add_tag$', views.lessons_add_tag, name='lessons_add_tag'),
     url(r'^lessons/remove_tag$', views.lessons_remove_tag, name='lessons_remove_tag'),
+    url(r'^lessons/edit$', views.lessons_edit, name='lessons_edit'),
+    url(r'^lessons/update$', views.lessons_update, name='lessons_update'),
 
     url(r'^tags/main$', views.tags_main, name='tags_main'),
     url(r'^tags/filter$', views.tags_filter, name='tags_filter'),
     url(r'^tags/list$', views.tags_list, name='tags_list'),
-    url(r'^tags/new$', views.tags_new, name='tags_new'),
-    url(r'^tags/create$', views.tags_create, name='tags_create'),
 ]

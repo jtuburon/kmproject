@@ -6,8 +6,8 @@ import datetime
 
 
 class DomainTag(EmbeddedDocument):
-    uri= URLField(max_length=250, unique=True)
-    label= StringField(max_length=200, unique=True)
+    uri= URLField(max_length=250)
+    label= StringField(max_length=200)
 
 # Create your models here.
 class Lesson(Document):
