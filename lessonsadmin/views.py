@@ -16,8 +16,33 @@ from lessonsadmin.models import *
 # Create your views here.
 
 def index(request):
+	print request.session
 	context= {}
 	return render(request, 'lessonsadmin/index.html', context)
+
+@csrf_exempt
+def login(request):
+    try:
+    	username= request.POST.get('username', '')
+    	password= request.POST.get('password', '')
+    	print username
+    	print password
+        user = User.objects.get(username= username)
+        print "WAPEEOOOO"
+        print user.username
+        if user.check_password(password):
+			user.backend = 'mongoengine.django.auth.MongoEngineBackend'
+			request.session["user"] = user.username
+			return JsonResponse({'status': 1, "msg": "Login OK"})
+        else:
+            return JsonResponse({'status': 0, "msg": "Invalid password"})
+    except DoesNotExist:
+        return JsonResponse({'status': 0, "msg": "Invalid password"})
+
+@csrf_exempt
+def logout(request):
+	del request.session["user"]
+	return JsonResponse({'status': 1, "msg": "Logout OK"})
 
 def show_info(request):
 	context = {}
@@ -155,23 +180,3 @@ def lessons_remove_tag(request):
 		l.save()
 	return JsonResponse({'status': 1, "msg": "Tag removed succesfully"})
 
-@csrf_exempt
-def login(request):
-    try:
-    	username= request.POST.get('username', '')
-    	password= request.POST.get('password', '')
-    	print username
-    	print password
-        user = User.objects.get(username= username)
-        print "WAPEEOOOO"
-        print user.username
-        if user.check_password(password):
-
-        	request.session["user"] = user.username
-
-        	return JsonResponse({'status': 1, "msg": "Login OK"})
-        else:
-            return JsonResponse({'status': 0, "msg": "Invalid password"})
-    except DoesNotExist:
-        return JsonResponse({'status': 0, "msg": "Invalid password"})
-    

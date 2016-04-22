@@ -1,3 +1,8 @@
+/*
+-------------------------------------------------
+Session Functions
+-------------------------------------------------
+*/
 function login(){
 	if($('#loginModal')){
 		$('#loginModal').modal('show')
@@ -20,6 +25,22 @@ function do_login(){
 	    success: function (response) {
 			if(response.status==1){
 				location.reload(true);
+			}
+	    },
+	    error: function (request, status, err) {
+	    	console.log(err);
+	    }
+	});
+}
+
+function logout(){
+	$.ajax({
+	    type: "POST",
+	    url: "users/logout",
+	    dataType: "json",
+	    success: function (response) {
+			if(response.status==1){
+				location.reload(true);
 			}else{
 				$('#loginModal').modal('hide');
 			}
@@ -29,8 +50,6 @@ function do_login(){
 	    }
 	});
 }
-
-
 
 /*
 -------------------------------------------------
