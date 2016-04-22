@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from mongoengine import *
 import datetime
-
+from mongoengine.django.auth import User
 
 
 class DomainTag(EmbeddedDocument):

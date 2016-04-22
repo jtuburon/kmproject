@@ -101,6 +101,7 @@ AUTHENTICATION_BACKENDS = (
 
 
 MONGOENGINE_USER_DOCUMENT = 'mongoengine.django.auth.User'
+#MONGOENGINE_USER_DOCUMENT = 'tecnolls.models.User'
 
 SESSION_ENGINE = 'mongoengine.django.sessions'
 SESSION_SERIALIZER = 'mongoengine.django.sessions.BSONSerializer'

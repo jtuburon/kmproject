@@ -5,13 +5,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
 from django.contrib.auth import login
-from mongoengine.django.auth import User
 from mongoengine.queryset import DoesNotExist
 from django.contrib import messages
 
 from helpers import *
 
 from tecnolls.models import *
+from mongoengine.django.auth import User
 
 # Create your views here.
 
