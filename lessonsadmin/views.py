@@ -1,7 +1,13 @@
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
+
+from django.contrib.auth import login
+from mongoengine.django.auth import User
+from mongoengine.queryset import DoesNotExist
+from django.contrib import messages
 
 from helpers import *
 
@@ -148,3 +154,24 @@ def lessons_remove_tag(request):
 		l.tags= map.values()
 		l.save()
 	return JsonResponse({'status': 1, "msg": "Tag removed succesfully"})
+
+@csrf_exempt
+def login(request):
+    try:
+    	username= request.POST.get('username', '')
+    	password= request.POST.get('password', '')
+    	print username
+    	print password
+        user = User.objects.get(username= username)
+        print "WAPEEOOOO"
+        print user.username
+        if user.check_password(password):
+
+        	request.session["user"] = user.username
+
+        	return JsonResponse({'status': 1, "msg": "Login OK"})
+        else:
+            return JsonResponse({'status': 0, "msg": "Invalid password"})
+    except DoesNotExist:
+        return JsonResponse({'status': 0, "msg": "Invalid password"})
+    

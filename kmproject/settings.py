@@ -82,13 +82,12 @@ WSGI_APPLICATION = 'kmproject.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
 DATABASES = {
     'default': {
         'ENGINE': '',
     },
 }
-
-#SESSION_ENGINE = 'mongoengine.django.sessions' # optional
 
 _MONGODB_HOST = '127.0.0.1'
 _MONGODB_NAME = 'lessonsdb'
@@ -99,6 +98,11 @@ mongoengine.connect(_MONGODB_NAME, host=_MONGODB_HOST)
 AUTHENTICATION_BACKENDS = (
     'mongoengine.django.auth.MongoEngineBackend',
 )
+
+MONGOENGINE_USER_DOCUMENT = 'mongoengine.django.auth.User'
+
+SESSION_ENGINE = 'mongoengine.django.sessions'
+SESSION_SERIALIZER = 'mongoengine.django.sessions.BSONSerializer'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

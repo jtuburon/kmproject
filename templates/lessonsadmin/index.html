@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Tecnosystem's LLS Admin</title>
+    <title>Tecnosystem's LLS</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -46,8 +46,35 @@
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">Tecnosystem's LLS Admin</a>
+                <a class="navbar-brand" href="index.html">Tecnosystem's LLS</a>
             </div>
+
+             <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    {% if not request.session.user %}
+                        <li>
+                            <a href="javascript:sign_in();"><i class="fa fa-edit fa-fw"></i> Sign in</a>
+                        </li>
+                        <li>
+                            <a href="javascript:login();"><i class="fa fa-edit fa-fw"></i> Login</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="#"></i>Welcome to, {{request.session.user}}</a>
+                        </li>
+                        <li>
+                            <a href="javascript:logout();"><i class="fa fa-edit fa-fw"></i>Logout</a>
+                        </li>
+                        
+                    {% endif %}
+                    
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
             <!-- /.navbar-header -->
             
             <!-- /.navbar-top-links -->
@@ -61,11 +88,18 @@
                         <li class="sidebar-search">
                         </li>
                         <li>
+                            <a href="javascript:lessons_search();"><i class="fa fa-table fa-fw"></i>Search Lessons</a>
+                        </li>
+                        {% if request.session.user %}
+                        <li class="sidebar-search">
+                        </li>
+                        <li>
                             <a href="javascript:lessons_index();"><i class="fa fa-table fa-fw"></i>Lessons' List</a>
                         </li>
                         <li>
                             <a href="javascript:tags_index();"><i class="fa fa-table fa-fw"></i>Domain's Tags</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -81,6 +115,31 @@
     </div>
     <!-- /#wrapper -->
 
+    <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sg">
+        <div id="loginForm" class="modal-content">
+            <div class="panel-heading">
+                <h3 class="panel-title">Please Sign In</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form">
+                    <fieldset>
+                        <div class="form-group">
+                            <input id="username" class="form-control" placeholder="username" name="username" type="text" autofocus>
+                        </div>
+                        <div class="form-group">
+                            <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                        </div>
+                        
+                        <!-- Change this to a button or input when using this as a form -->
+                        <a href="javascript:do_login()" class="btn btn-lg btn-success btn-block">Login</a>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>
+      </div>
+    </div>
     <!-- jQuery -->
     <script src="../static/bower_components/jquery/dist/jquery.min.js"></script>
 

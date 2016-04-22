@@ -1,8 +1,43 @@
+function login(){
+	if($('#loginModal')){
+		$('#loginModal').modal('show')
+	}
+}
+
+function do_login(){
+	var username= $('#username').val();
+	var password= $('#password').val();
+	
+	data = {
+		username: username, 
+		password: password, 
+	};
+	$.ajax({
+	    type: "POST",
+	    url: "users/login",
+	    dataType: "json",
+	    data: data,
+	    success: function (response) {
+			if(response.status==1){
+				location.reload(true);
+			}else{
+				$('#loginModal').modal('hide');
+			}
+	    },
+	    error: function (request, status, err) {
+	    	console.log(err);
+	    }
+	});
+}
+
+
+
 /*
 -------------------------------------------------
 Lessons Functions
 -------------------------------------------------
 */
+
 function info_index(){
     $('#page-wrapper').load('info/main');
 }
@@ -191,24 +226,3 @@ function create_tag(){
 }
 
 var tagSuggestionTemplate= {suggestion: Handlebars.compile('<div><strong>{{label}}</strong><br>-{{uri}}</div>')};
-
-/*
-function question_detail(question_id, ner_id){
-    $('#page-wrapper').load('question/detail/'+ question_id+"/"+ ner_id);
-}
-
-function refresh_question_info(question_id, ner_id){
-    $('#question_info').load('question/detail/info/'+ question_id+"/"+ ner_id);
-}
-v
-function load_resource_info(uri){
-	console.log(uri)
-	$('#resource_info_modal_content').html('');
-	$('#resource_info_modal_content').load('resource/info/'+ uri, function(){
-		if($('#myModal')){
-			$('#myModal').modal('show')
-		}
-	});
-}
-
-*/
