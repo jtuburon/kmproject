@@ -12,8 +12,10 @@ urlpatterns = [
     
     url(r'^info/main$', views.show_info, name='show_info'),
     
+    url(r'^lessons/index$', views.lessons_index, name='lessons_index'),
     url(r'^lessons/main$', views.lessons_main, name='lessons_main'),
     url(r'^lessons/filter$', views.lessons_filter, name='lessons_filter'),
+    url(r'^lessons/search$', views.lessons_search, name='lessons_search'),
     url(r'^lessons/new$', views.lessons_new, name='lessons_new'),
     url(r'^lessons/create$', views.lessons_create, name='lessons_create'),
     url(r'^lessons/add_tag$', views.lessons_add_tag, name='lessons_add_tag'),

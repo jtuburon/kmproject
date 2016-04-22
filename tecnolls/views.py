@@ -62,6 +62,11 @@ def show_info(request):
 	context = {}
 	return render(request, 'tecnolls/info_main.html', context)
 
+def lessons_index(request):
+	context = {}
+	return render(request, 'tecnolls/lessons_index.html', context)
+
+
 def lessons_main(request):
 	context = {}
 	return render(request, 'tecnolls/lessons_main.html', context)
@@ -74,6 +79,16 @@ def lessons_filter(request):
 
 	lessons_list= []
 	lessons_list= get_lessons_list_with_filter(filter_type, filter_text, page)
+	context = {"lessons_list": lessons_list}
+	return render(request, 'tecnolls/lessons_list.html', context)
+
+@csrf_exempt
+def lessons_search(request):
+	query_tags = request.POST.getlist('query_tags[]')
+	print query_tags
+	page= int(request.POST.get('page', '1'))
+	lessons_list= []
+	lessons_list= get_lessons_list_with_tags(query_tags, page)
 	context = {"lessons_list": lessons_list}
 	return render(request, 'tecnolls/lessons_list.html', context)
 

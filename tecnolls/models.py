@@ -22,3 +22,12 @@ class Lesson(Document):
     context= StringField()
     solution= StringField()
     tags = ListField(EmbeddedDocumentField(DomainTag))
+
+
+class LessonResult(Document):
+    number= IntField(unique=True)
+    pub_date = DateTimeField(default=datetime.datetime.now, help_text='date published')
+    author= StringField(max_length=200)
+    title= StringField(max_length=400)
+    problem= StringField()
+    tags = ListField(StringField())

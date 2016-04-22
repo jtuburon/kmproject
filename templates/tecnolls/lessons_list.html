@@ -1,26 +1,4 @@
 {% load lessons_extras %}
-<script>
-    var typeaheadSource = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        identify: function(tag) { return tag.label; },
-        local: [],
-        limit: 15,
-        name: 'typeaheadSource',
-        ttl: 0,
-        'cache': false
-    });
-    typeaheadSource.initialize(true);
-    $.get( "tags/list", 
-        function( data ) {
-            $.each(data, function(i, tag){
-                typeaheadSource.add(tag);
-            });
-            
-        }
-    );
-    console.log(typeaheadSource);
-</script>
 
 <div class="panel panel-default">
     <div class="panel-heading">

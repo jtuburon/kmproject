@@ -81,7 +81,7 @@ function filter_users(page){
 
 /*
 -------------------------------------------------
-Lessons Functions
+Info Functions
 -------------------------------------------------
 */
 
@@ -89,7 +89,18 @@ function info_index(){
     $('#page-wrapper').load('info/main');
 }
 
+/*
+-------------------------------------------------
+Lessons Functions
+-------------------------------------------------
+*/
 function lessons_index(){
+    $('#page-wrapper').load('lessons/index', function(){
+        search_lessons(1)
+    });
+}
+
+function lessons_admin(){
     $('#page-wrapper').load('lessons/main', function(){
     	$('#lessons_filter_text').bind("enterKey",function(e){
            filter_lessons(1);
@@ -102,6 +113,12 @@ function lessons_index(){
         });
         filter_lessons(1)
     });
+}
+
+function search_lessons(page){
+	var query_tags= $("#lessons_tags_query").tagsinput('items')
+	data = {query_tags: query_tags, page: page}
+	$('#lessons_div').load('lessons/search', data);
 }
 
 function filter_lessons(page){
@@ -271,5 +288,26 @@ function create_tag(){
 	    }
 	});
 }
+
+var typeaheadSource = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    identify: function(tag) { return tag.label; },
+    local: [],
+    limit: 15,
+    name: 'typeaheadSource',
+    ttl: 0,
+    'cache': false
+});
+typeaheadSource.initialize(true);
+$.get( "tags/list", 
+    function( data ) {
+        $.each(data, function(i, tag){
+            typeaheadSource.add(tag);
+        });
+        
+    }
+);
+
 
 var tagSuggestionTemplate= {suggestion: Handlebars.compile('<div><strong>{{label}}</strong><br>-{{uri}}</div>')};
