@@ -44,6 +44,20 @@ def logout(request):
 	del request.session["user"]
 	return JsonResponse({'status': 1, "msg": "Logout OK"})
 
+def users_main(request):
+	context = {}
+	return render(request, 'tecnolls/users_main.html', context)
+
+
+@csrf_exempt
+def users_filter(request):
+	filter_type= request.POST.get('filter_type', '')
+	filter_text= request.POST.get('filter_text', '')
+	page= int(request.POST.get('page', '1'))
+	users_list= get_users_list_with_filter(filter_type, filter_text, page)
+	context = {"users_list": users_list}
+	return render(request, 'tecnolls/users_list.html', context)
+
 def show_info(request):
 	context = {}
 	return render(request, 'tecnolls/info_main.html', context)

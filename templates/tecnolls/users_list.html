@@ -1,0 +1,55 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-bar-chart-o fa-fw"></i>TecnoLLS's User
+        <!--button type="button" onClick="javascript:new_tag();" class="btn btn-primary">New Tag</button-->     
+    </div>
+    <nav>
+      <ul class="pagination">
+        <li>
+          {% if users_list.has_previous %}
+          <a href="javascript:filter_tags({{ users_list.previous_page_number }})" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+          {% else %}
+            <span aria-hidden="true">&laquo;</span>
+          {% endif %}
+        </li>
+        <li><span class="current">
+                Page {{ users_list.number }} of {{ users_list.paginator.num_pages }}.
+            </span></li>
+        <li>
+          {% if users_list.has_next %}
+          <a href="javascript:filter_tags({{ users_list.next_page_number }})" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+          {% else %}
+            <span aria-hidden="true">&raquo;</span>
+          {% endif %}
+        </li>
+      </ul>
+    </nav>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Admin</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users_list %}
+                    <tr>
+                        <td style="font-size:12px;">{{u.is_superuser}}</td>
+                        <td style="font-size:12px;">{{u.username}}</td>
+                        <td style="font-size:12px;">{{u.email}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </ul>
+    </div>
+</div>
+

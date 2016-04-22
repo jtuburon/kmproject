@@ -2,8 +2,28 @@ from tecnolls.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import re
 from SPARQLWrapper import SPARQLWrapper, JSON
+from mongoengine.django.auth import User
+
 
 PAGE_SIZE=5
+
+def get_users_list_with_filter(filter_type, filter_text, page):
+	filter_p={}
+	filters_list=[]
+	pattern= re.compile(filter_text, re.IGNORECASE)
+	filter_p= {filter_type: pattern}
+	print filter_p
+	users = []
+	users_list = User.objects(__raw__=filter_p).order_by('username')
+	paginator = Paginator(users_list, PAGE_SIZE) # Show 25 contacts per page
+	try:
+		users = paginator.page(page)
+	except PageNotAnInteger:
+		users = paginator.page(1)
+	except EmptyPage:
+		users = paginator.page(paginator.num_pages)
+	return users
+
 
 def get_lessons_list_with_filter(filter_type, filter_text, page):
 

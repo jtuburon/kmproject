@@ -53,6 +53,34 @@ function logout(){
 
 /*
 -------------------------------------------------
+User's Admin Functions
+-------------------------------------------------
+*/
+
+function users_index(){
+    $('#page-wrapper').load('users/main', function(){
+    	$('#users_filter_text').bind("enterKey",function(e){
+           filter_users(1);
+        });
+        $('#users_filter_text').keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                $(this).trigger("enterKey");
+            }
+        });
+        filter_users(1)
+    });
+}
+
+function filter_users(page){
+	var filter_text= $('#users_filter_text').val();
+	var filter_type= $('#users_filter_type').val();
+	data = {filter_type: filter_type, filter_text: filter_text, page: page}
+	$('#users_div').load('users/filter', data);
+}
+
+/*
+-------------------------------------------------
 Lessons Functions
 -------------------------------------------------
 */
