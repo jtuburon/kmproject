@@ -91,11 +91,12 @@
 	 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 </div>
 
+
 <script>
 	$("#problem").Editor();
 	$("#context").Editor();
 	$("#solution").Editor();
-	$("#problem").Editor("setText", "{{lesson.problem}}");
-	$("#context").Editor("setText", "{{lesson.context}}");
-	$("#solution").Editor("setText", "{{lesson.solution}}");
+	$("#problem").Editor("setText", '{{lesson.problem|escapejs}}');
+	$("#context").Editor("setText", '{{lesson.context|escapejs}}');
+	$("#solution").Editor("setText", '{{lesson.solution|escapejs}}');
 </script>
