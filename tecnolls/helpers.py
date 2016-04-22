@@ -1,4 +1,4 @@
-from lessonsadmin.models import *
+from tecnolls.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import re
 from SPARQLWrapper import SPARQLWrapper, JSON

@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'lessonsadmin'
+    'tecnolls'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -98,6 +98,7 @@ mongoengine.connect(_MONGODB_NAME, host=_MONGODB_HOST)
 AUTHENTICATION_BACKENDS = (
     'mongoengine.django.auth.MongoEngineBackend',
 )
+
 
 MONGOENGINE_USER_DOCUMENT = 'mongoengine.django.auth.User'
 

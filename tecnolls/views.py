@@ -11,14 +11,14 @@ from django.contrib import messages
 
 from helpers import *
 
-from lessonsadmin.models import *
+from tecnolls.models import *
 
 # Create your views here.
 
 def index(request):
 	print request.session
 	context= {}
-	return render(request, 'lessonsadmin/index.html', context)
+	return render(request, 'tecnolls/index.html', context)
 
 @csrf_exempt
 def login(request):
@@ -46,11 +46,11 @@ def logout(request):
 
 def show_info(request):
 	context = {}
-	return render(request, 'lessonsadmin/info_main.html', context)
+	return render(request, 'tecnolls/info_main.html', context)
 
 def lessons_main(request):
 	context = {}
-	return render(request, 'lessonsadmin/lessons_main.html', context)
+	return render(request, 'tecnolls/lessons_main.html', context)
 
 @csrf_exempt
 def lessons_filter(request):
@@ -61,11 +61,11 @@ def lessons_filter(request):
 	lessons_list= []
 	lessons_list= get_lessons_list_with_filter(filter_type, filter_text, page)
 	context = {"lessons_list": lessons_list}
-	return render(request, 'lessonsadmin/lessons_list.html', context)
+	return render(request, 'tecnolls/lessons_list.html', context)
 
 def lessons_new(request):
 	context = {"lesson": None}
-	return render(request, 'lessonsadmin/lessons_form.html', context)
+	return render(request, 'tecnolls/lessons_form.html', context)
 
 
 @csrf_exempt
@@ -97,7 +97,7 @@ def lessons_edit(request):
 	lesson_id= request.POST.get('lesson_id', 0)
 	lesson = Lesson.objects.get(number=lesson_id) if lesson_id>0 else None
 	context = {"lesson": lesson}
-	return render(request, 'lessonsadmin/lessons_form.html', context)
+	return render(request, 'tecnolls/lessons_form.html', context)
 
 
 @csrf_exempt
@@ -131,7 +131,7 @@ def lessons_update(request):
 
 def tags_main(request):
 	context = {}
-	return render(request, 'lessonsadmin/tags_main.html', context)
+	return render(request, 'tecnolls/tags_main.html', context)
 
 @csrf_exempt
 def tags_filter(request):
@@ -143,7 +143,7 @@ def tags_filter(request):
 	tags_list= get_tags_list_from_fuseki_with_filter(filter_type, filter_text, page)
 	
 	context = {"tags_list": tags_list}
-	return render(request, 'lessonsadmin/tags_list.html', context)
+	return render(request, 'tecnolls/tags_list.html', context)
 
 def tags_list(request):
 	tags_list= get_tags_list_from_fuseki()
