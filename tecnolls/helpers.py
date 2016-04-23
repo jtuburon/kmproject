@@ -28,24 +28,29 @@ def get_lessons_list_with_tags(query_tags, page):
 	lessons = []
 	lessons_list =[]
 	if len(query_tags)==0:
-		print "NOHAY"
 		lessons_list = Lesson.objects().all().order_by('-number')
 	else:		
-		print "SIHAY"
 		t_lessons_list = Lesson._get_collection().aggregate([
-			{"$project": {"hits": { "$setIntersection":[ "$tags.label", query_tags ]}, "_id": 1, "number": 1, "pub_date": 1 , "author": 1 , "title": 1 , "problem": 1 } },
-			{"$project": {"hits": 1, "numberOfHits": { "$size": "$hits"}, "_id": 1, "number": 1, "pub_date": 1 , "author": 1 , "title": 1 , "problem": 1  } },
-			{"$match": {"numberOfHits": {"$gt": 0 }} },
-			{"$sort": {"numberOfHits":-1}}
+			{"$project": {"hits": { "$setIntersection":[ "$tags.label", query_tags ]}, "_id": 1, "number": 1, "pub_date": 1 , "author": 1 , "title": 1 , "problem": 1, "tags": 1 } },
+			{"$project": {"hits": 1, "hitsCount": { "$size": "$hits"}, "_id": 1, "number": 1, "pub_date": 1 , "author": 1 , "title": 1 , "problem": 1, "tags": 1  } },
+			{"$match": {"hitsCount": {"$gt": 0 }} },
+			{"$sort": {"hitsCount":-1}}
 		])["result"]
 		for l in t_lessons_list:
+			print l
 			lesson = LessonResult()
 			lesson.number= l['number']
 			lesson.author= l['author']
 			lesson.pub_date= l['pub_date']
 			lesson.title= l['title']
 			lesson.problem= l['problem']
-			lessons_list.append(lesson)
+			lesson.tags= l['tags']
+			lesson.hits= l['hits']
+			lesson.hits_count= l['hitsCount']
+			lessons_list.append(lesson)	
+			print "[]]]]]]]]]]]]]]]]]]]"
+			print lesson.hits_count
+			print lesson.tags
 	paginator = Paginator(lessons_list, PAGE_SIZE) # Show 25 contacts per page
 	try:
 		lessons = paginator.page(page)

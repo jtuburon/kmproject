@@ -166,7 +166,7 @@ function create_lesson(){
 			console.log(response)
 			if(response.status==1){
 				$('#lessonModal').modal('hide');
-				filter_lessons(1);
+				search_lessons(1);
 			}
 
 	    },
@@ -224,6 +224,16 @@ function update_lesson(){
 	    error: function (request, status, err) {
 	    	console.log(err);
 	    }
+	});
+}
+
+function lesson_show(lesson_id){
+	data= {lesson_id: lesson_id};
+    $('#lesson_form').html('');
+	$('#lesson_form').load('lessons/show', data,  function(){
+		if($('#lessonModal')){
+			$('#lessonModal').modal('show')
+		}
 	});
 }
 /*

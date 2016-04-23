@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^lessons/remove_tag$', views.lessons_remove_tag, name='lessons_remove_tag'),
     url(r'^lessons/edit$', views.lessons_edit, name='lessons_edit'),
     url(r'^lessons/update$', views.lessons_update, name='lessons_update'),
+    url(r'^lessons/show$', views.lessons_show, name='lessons_show'),
+
 
     url(r'^tags/main$', views.tags_main, name='tags_main'),
     url(r'^tags/filter$', views.tags_filter, name='tags_filter'),

@@ -90,10 +90,10 @@ def lessons_search(request):
 	lessons_list= []
 	lessons_list= get_lessons_list_with_tags(query_tags, page)
 	context = {"lessons_list": lessons_list}
-	return render(request, 'tecnolls/lessons_list.html', context)
+	return render(request, 'tecnolls/lessons_result.html', context)
 
 def lessons_new(request):
-	context = {"lesson": None}
+	context = {"lesson": None, "readOnly": False}
 	return render(request, 'tecnolls/lessons_form.html', context)
 
 
@@ -125,7 +125,7 @@ def lessons_create(request):
 def lessons_edit(request):
 	lesson_id= request.POST.get('lesson_id', 0)
 	lesson = Lesson.objects.get(number=lesson_id) if lesson_id>0 else None
-	context = {"lesson": lesson}
+	context = {"lesson": lesson, "readOnly": False}
 	return render(request, 'tecnolls/lessons_form.html', context)
 
 
@@ -157,6 +157,15 @@ def lessons_update(request):
 		return JsonResponse({'status': 1, "msg": "Lesson updated succesfully"})
 	else:
 		return JsonResponse({'status': 0, "msg": "Lesson doesn't exist"})
+
+@csrf_exempt
+def lessons_show(request):
+	lesson_id= request.POST.get('lesson_id', 0)
+	lesson = Lesson.objects.get(number=lesson_id) if lesson_id>0 else None
+	context = {"lesson": lesson, "readOnly": True}
+	return render(request, 'tecnolls/lessons_form.html', context)
+
+
 
 def tags_main(request):
 	context = {}
