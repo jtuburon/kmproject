@@ -193,7 +193,7 @@ def lessons_add_tag(request):
 	uri= request.POST.get('tag[uri]')
 	label= request.POST.get('tag[label]')
 	l= Lesson.objects.get(number=lesson_id)
-	if l != None:
+	if l != None and uri!= None and label!=None:
 		print l.tags
 		ed = DomainTag(label= label, uri= uri)
 		l.tags.append(ed)
