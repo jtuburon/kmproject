@@ -60,7 +60,8 @@
                             $(function() {
                                 $('#lessontags-{{l.number}}').tags({
                                     tagData: {% autoescape off%}{% resulttagslabels l %} {% endautoescape %},
-                                    readOnly: true
+                                    readOnly: true,
+                                    tagSize: "sm"
                                 });
                             });
                         </script>
