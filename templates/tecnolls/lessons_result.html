@@ -47,18 +47,15 @@
                             {{l.problem}}
                         {% endautoescape %}
                         </p>
-                        <br>
+                        <hr>
                         {% if l.hits_count %}
                         <p>
                             <b>Hits Count:</b>  {{l.hits_count}} 
                         </p>
                         {% endif %}
-
-                        <div id="lessontags-{{l.number}}" class="tag-list">
-                            
-                        </div>
-                        <br>
                         
+                        <div id="lessontags-{{l.number}}" class="tag-list"></div>
+                        <br>
                         <script>
                             $(function() {
                                 $('#lessontags-{{l.number}}').tags({
@@ -67,28 +64,9 @@
                                 });
                             });
                         </script>
-
-                        <!--
-                        <input id="lessontags-{{l.number}}" type="text" value="{% resulttagslabels l %}" data-role="tagsinput"></input>
-                        {% autoescape off%}
-                        <script>
-                            $('#lessontags-{{l.number}}').tagsinput({
-                              typeaheadjs: {
-                                name: 'typeaheadSource',
-                                displayKey: 'label',
-                                valueKey: 'label',
-                                source: typeaheadSource.ttAdapter(),
-                                templates: tagSuggestionTemplate,
-                                engine: Hogan,
-                              }
-                            });
-                            $('#lessontags-{{l.number}}').removeClass('bootstrap-tagsinput');
-                            $('#lessontags-{{l.number}}').find("input").remove();
-                            $('#lessontags-{{l.number}}').css("padding-bottom", "10px");
-                        </script>
-                        -->
-                        {% endautoescape %}
+                        
                     </div>
+                    
                 </div>
             </li>
             {% endfor %}
