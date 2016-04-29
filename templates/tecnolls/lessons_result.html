@@ -1,76 +1,78 @@
 {% load lessons_extras %}
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <i class="fa fa-bar-chart-o fa-fw"></i>Tecnosystems' Lessons Learned
-        <button type="button" onClick="javascript:new_lesson();" class="btn btn-primary">New Lesson</button>
-    </div>
-    <nav>
-      <ul class="pagination">
-        <li>
-          {% if lessons_list.has_previous %}
-          <a href="javascript:filter_lessons({{ lessons_list.previous_page_number }})" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-          {% else %}
-            <span aria-hidden="true">&laquo;</span>
-          {% endif %}
-        </li>
-        <li><span class="current">
-                Page {{ lessons_list.number }} of {{ lessons_list.paginator.num_pages }}.
-            </span></li>
-        <li>
-          {% if lessons_list.has_next %}
-          <a href="javascript:filter_lessons({{ lessons_list.next_page_number }})" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-          {% else %}
-            <span aria-hidden="true">&raquo;</span>
-          {% endif %}
-        </li>
-      </ul>
-    </nav>
-    <div class="panel-body">
-        <ul class="timeline">
-            {% for l in lessons_list %}
-            <li class="{% cycle '' 'timeline-inverted' %}">
-                <div class="timeline-badge {% cycle 'warning' 'info' %}"><i class="fa fa-credit-card"></i></div>
-                <div class="timeline-panel">
-                    <div class="timeline-heading">
-                        <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{l.pub_date}}</small> {{l.author}}
-                        </p>
-                        <h4 class="timeline-title"><a href="javascript:lesson_show({{l.number}})">Lesson No: {{l.number}} - {{l.title}}</a></h4>
-                    </div>
-                    <div class="timeline-body">
-                        <p>
-                        {% autoescape off%}
-                            {{l.problem}}
-                        {% endautoescape %}
-                        </p>
-                        <hr>
-                        {% if l.hits_count %}
-                        <p>
-                            <b>Hits Count:</b>  {{l.hits_count}} 
-                        </p>
-                        {% endif %}
-                        
-                        <div id="lessontags-{{l.number}}" class="tag-list"></div>
-                        <script>
-                            $(function() {
-                                $('#lessontags-{{l.number}}').tags({
-                                    tagData: {% autoescape off%}{% resulttagslabels l %} {% endautoescape %},
-                                    readOnly: true,
-                                    tagSize: "sm"
-                                });
-                            });
-                        </script>
-                        
-                    </div>
-                    
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i>Tecnosystems' Lessons Learned
+                <button type="button" onClick="javascript:new_lesson();" class="btn btn-primary">New Lesson</button>
+            </div>
+            <nav>
+              <ul class="pagination">
+                <li>
+                  {% if lessons_list.has_previous %}
+                  <a href="javascript:filter_lessons({{ lessons_list.previous_page_number }})" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                  {% else %}
+                    <span aria-hidden="true">&laquo;</span>
+                  {% endif %}
+                </li>
+                <li><span class="current">
+                        Page {{ lessons_list.number }} of {{ lessons_list.paginator.num_pages }}.
+                    </span></li>
+                <li>
+                  {% if lessons_list.has_next %}
+                  <a href="javascript:filter_lessons({{ lessons_list.next_page_number }})" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                  {% else %}
+                    <span aria-hidden="true">&raquo;</span>
+                  {% endif %}
+                </li>
+              </ul>
+            </nav>
+            <div class="panel-body">
+                <ul class="timeline">
+                    {% for l in lessons_list %}
+                    <li class="{% cycle '' 'timeline-inverted' %}">
+                        <div class="timeline-badge info"><i class="fa fa-credit-card"></i></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{l.pub_date}}</small> {{l.author}}
+                                </p>
+                                <h4 class="timeline-title"><a href="javascript:lesson_show({{l.number}})">Lesson No: {{l.number}} - {{l.title}}</a></h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p>
+                                {% autoescape off%}
+                                    {{l.problem}}
+                                {% endautoescape %}
+                                </p>
+                                <hr>
+                                {% if l.hits_count %}
+                                <p>
+                                    <b>Hits Count:</b>  {{l.hits_count}} 
+                                </p>
+                                {% endif %}
+                                
+                                <div id="lessontags-{{l.number}}" class="tag-list"></div>
+                                <script>
+                                    $(function() {
+                                        $('#lessontags-{{l.number}}').tags({
+                                            tagData: {% autoescape off%}{% resulttagslabels l %} {% endautoescape %},
+                                            readOnly: true,
+                                            tagSize: "sm"
+                                        });
+                                    });
+                                </script>
+                                
+                            </div>
+                            
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
-

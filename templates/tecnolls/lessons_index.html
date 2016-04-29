@@ -3,47 +3,49 @@
         <h1 class="page-header">Tecnosystems' Lessons Learned</h1>
     </div>
 </div>
-
-<div class="panel panel-default">
-
-    <div class="panel-heading">
-        <i class="fa fa-bar-chart-o fa-fw"></i> Filtering Options:
-    </div>
-    <div class="form-group">
-        <div class="row">
-		  <div class="col-lg-8">
-		    <div class="input-group">
-		      <span class="input-group-addon">
-		        Search
-		      </span>
-		      <input id="lessons_tags_query" type="text" value="" data-role="tagsinput"></input>
-	            <script>
-	                $('#lessons_tags_query').tagsinput({
-	                  typeaheadjs: {
-	                    name: 'typeaheadSource',
-	                    displayKey: 'label',
-	                    valueKey: 'label',
-	                    source: typeaheadSource.ttAdapter(),
-	                    templates: tagSuggestionTemplate,
-	                    engine: Hogan,
-	                  }
-	                });
-	                $('#lessons_tags_query').on('itemAdded', function(event) {
-	                	var tags= $("#lessons_tags_query").tagsinput('items')
-	                	search_lessons(1);        
-                    });
-                    $('#lessons_tags_query').on('itemRemoved', function(event) {
-	                	var tags= $("#lessons_tags_query").tagsinput('items')
-	                	search_lessons(1);        
-                    });
-	            </script>
-		    </div><!-- /input-group -->
-		  </div><!-- /.col-lg-6 -->
-		</div><!-- /.row -->
-    </div>
+<div class="row">
+    <div class="col-lg-12">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+		        <i class="fa fa-bar-chart-o fa-fw"></i> Filtering Options:
+		    </div>
+		    <div class="form-group">
+		        <div class="row">
+				  <div class="col-lg-8">
+				    <div class="input-group">
+				      <span class="input-group-addon">
+				        Search
+				      </span>
+				      <input id="lessons_tags_query" type="text" value="" data-role="tagsinput"></input>
+			            <script>
+			                $('#lessons_tags_query').tagsinput({
+			                  typeaheadjs: {
+			                    name: 'typeaheadSource',
+			                    displayKey: 'label',
+			                    valueKey: 'label',
+			                    source: typeaheadSource.ttAdapter(),
+			                    templates: tagSuggestionTemplate,
+			                    engine: Hogan,
+			                  }
+			                });
+			                $('#lessons_tags_query').on('itemAdded', function(event) {
+			                	var tags= $("#lessons_tags_query").tagsinput('items')
+			                	search_lessons(1);        
+		                    });
+		                    $('#lessons_tags_query').on('itemRemoved', function(event) {
+			                	var tags= $("#lessons_tags_query").tagsinput('items')
+			                	search_lessons(1);        
+		                    });
+			            </script>
+				    </div><!-- /input-group -->
+				  </div><!-- /.col-lg-6 -->
+				</div><!-- /.row -->
+		    </div>
+		</div>
+	</div>
 </div>
 
-<div id="lessons_div" class="row">
+<div id="lessons_div">
 </div>
 
 <div id="lessonModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel" aria-hidden="true">
