@@ -1,121 +1,124 @@
 {% load lessons_extras %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i>Tecnosystems' Lessons Learned
+            </div>
+            <nav>
+              <ul class="pagination">
+                <li>
+                  {% if lessons_list.has_previous %}
+                  <a href="javascript:filter_lessons({{ lessons_list.previous_page_number }})" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                  {% else %}
+                    <span aria-hidden="true">&laquo;</span>
+                  {% endif %}
+                </li>
+                <li><span class="current">
+                        Page {{ lessons_list.number }} of {{ lessons_list.paginator.num_pages }}.
+                    </span></li>
+                <li>
+                  {% if lessons_list.has_next %}
+                  <a href="javascript:filter_lessons({{ lessons_list.next_page_number }})" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                  {% else %}
+                    <span aria-hidden="true">&raquo;</span>
+                  {% endif %}
+                </li>
+              </ul>
+            </nav>
+            <div class="panel-body">
+                <ul class="timeline">
+                    {% for l in lessons_list %}
+                    <li class="{% cycle '' 'timeline-inverted' %}">
+                        <div class="timeline-badge {% cycle 'warning' 'info' %}"><i class="fa fa-check"></i></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{l.pub_date}}</small> {{l.author}}
+                                </p>
+                                <h4 class="timeline-title"><a href="javascript:lesson_edit({{l.number}})">Lesson No: {{l.number}} - {{l.title}}</a></h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p>
+                                {% autoescape off%}
+                                    {{l.problem}}
+                                {% endautoescape %}
+                                </p>
+                                
+                                <input id="lessontags-{{l.number}}" type="text" value="{% tagslabels l %}" data-role="tagsinput"></input>
+                                {% autoescape off%}
+                                <script>
+                                    $('#lessontags-{{l.number}}').tagsinput({
+                                      typeaheadjs: {
+                                        name: 'typeaheadSource',
+                                        displayKey: 'label',
+                                        valueKey: 'label',
+                                        freeInput: false,
+                                        source: typeaheadSource.ttAdapter(),
+                                        templates: tagSuggestionTemplate,
+                                        engine: Hogan,
+                                      }
+                                    });
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <i class="fa fa-bar-chart-o fa-fw"></i>Tecnosystems' Lessons Learned
-    </div>
-    <nav>
-      <ul class="pagination">
-        <li>
-          {% if lessons_list.has_previous %}
-          <a href="javascript:filter_lessons({{ lessons_list.previous_page_number }})" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-          {% else %}
-            <span aria-hidden="true">&laquo;</span>
-          {% endif %}
-        </li>
-        <li><span class="current">
-                Page {{ lessons_list.number }} of {{ lessons_list.paginator.num_pages }}.
-            </span></li>
-        <li>
-          {% if lessons_list.has_next %}
-          <a href="javascript:filter_lessons({{ lessons_list.next_page_number }})" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-          {% else %}
-            <span aria-hidden="true">&raquo;</span>
-          {% endif %}
-        </li>
-      </ul>
-    </nav>
-    <div class="panel-body">
-        <ul class="timeline">
-            {% for l in lessons_list %}
-            <li class="{% cycle '' 'timeline-inverted' %}">
-                <div class="timeline-badge {% cycle 'warning' 'info' %}"><i class="fa fa-check"></i></div>
-                <div class="timeline-panel">
-                    <div class="timeline-heading">
-                        <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{l.pub_date}}</small> {{l.author}}
-                        </p>
-                        <h4 class="timeline-title"><a href="javascript:lesson_edit({{l.number}})">Lesson No: {{l.number}} - {{l.title}}</a></h4>
-                    </div>
-                    <div class="timeline-body">
-                        <p>
-                        {% autoescape off%}
-                            {{l.problem}}
-                        {% endautoescape %}
-                        </p>
-                        
-                        <input id="lessontags-{{l.number}}" type="text" value="{% tagslabels l %}" data-role="tagsinput"></input>
-                        {% autoescape off%}
-                        <script>
-                            $('#lessontags-{{l.number}}').tagsinput({
-                              typeaheadjs: {
-                                name: 'typeaheadSource',
-                                displayKey: 'label',
-                                valueKey: 'label',
-                                freeInput: false,
-                                source: typeaheadSource.ttAdapter(),
-                                templates: tagSuggestionTemplate,
-                                engine: Hogan,
-                              }
-                            });
+                                    $('#lessontags-{{l.number}}').on('beforeItemAdd', function(event) {
+                                        var t_key = event.item
+                                        var t=typeaheadSource.get(t_key)[0];
+                                        console.log(t);
+                                        
+                                        $.ajax({
+                                            url: 'lessons/add_tag',
+                                            method: 'POST',
+                                            data: {"lesson_id": {{l.number}} , "tag": t},
+                                            success: function(response) {
+                                                console.log(response);
+                                                if (response.failure) {
+                                                    //$('#tags-input').tagsinput('remove', t_key, {preventPost: true});
+                                                    event.cancel= true;
+                                                }
+                                            }, 
+                                            error: function(error){
+                                                console.log(error);
+                                                event.cancel= true;
+                                            }
+                                        });
+                                        
+                                    });
 
-                            $('#lessontags-{{l.number}}').on('beforeItemAdd', function(event) {
-                                var t_key = event.item
-                                var t=typeaheadSource.get(t_key)[0];
-                                console.log(t);
-                                
-                                $.ajax({
-                                    url: 'lessons/add_tag',
-                                    method: 'POST',
-                                    data: {"lesson_id": {{l.number}} , "tag": t},
-                                    success: function(response) {
-                                        console.log(response);
-                                        if (response.failure) {
-                                            //$('#tags-input').tagsinput('remove', t_key, {preventPost: true});
-                                            event.cancel= true;
-                                        }
-                                    }, 
-                                    error: function(error){
-                                        console.log(error);
-                                        event.cancel= true;
-                                    }
-                                });
-                                
-                            });
-
-                            $('#lessontags-{{l.number}}').on('beforeItemRemove', function(event) {
-                                var t_key = event.item
-                                var t=typeaheadSource.get(t_key)[0];
-                                console.log(t);
-                                
-                                $.ajax({
-                                    url: 'lessons/remove_tag',
-                                    method: 'POST',
-                                    data: {"lesson_id": {{l.number}} , "tag": t},
-                                    success: function(response) {
-                                        console.log(response);
-                                        if (response.failure) {
-                                            //$('#tags-input').tagsinput('remove', t_key, {preventPost: true});
-                                            event.cancel= true;
-                                        }
-                                    }, 
-                                    error: function(error){
-                                        console.log(error);
-                                        event.cancel= true;
-                                    }
-                                });
-                                
-                            });
-                        </script>
-                        {% endautoescape %}
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+                                    $('#lessontags-{{l.number}}').on('beforeItemRemove', function(event) {
+                                        var t_key = event.item
+                                        var t=typeaheadSource.get(t_key)[0];
+                                        console.log(t);
+                                        
+                                        $.ajax({
+                                            url: 'lessons/remove_tag',
+                                            method: 'POST',
+                                            data: {"lesson_id": {{l.number}} , "tag": t},
+                                            success: function(response) {
+                                                console.log(response);
+                                                if (response.failure) {
+                                                    //$('#tags-input').tagsinput('remove', t_key, {preventPost: true});
+                                                    event.cancel= true;
+                                                }
+                                            }, 
+                                            error: function(error){
+                                                console.log(error);
+                                                event.cancel= true;
+                                            }
+                                        });
+                                        
+                                    });
+                                </script>
+                                {% endautoescape %}
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
