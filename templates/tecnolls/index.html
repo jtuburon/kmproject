@@ -34,6 +34,29 @@
     <link href="../static/dist/css/editor.css" rel="stylesheet">
     <link href="../static/dist/css/bootstrap-tagsinput.css" rel="stylesheet">
     <link href="../static/dist/css/bootstrap-tagsinput-typeahead.css" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="../static/bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="../static/bower_components/bootstrap-tags/js/bootstrap-tags.js"></script>
+
+    <script src="../static/dist/js/sb-admin-2.js"></script>
+
+    <script src="../static/dist/js/editor.js"></script>
+    <script src="../static/dist/js/typeahead.js"></script>
+    <script src="../static/dist/js/bootstrap-tagsinput.js"></script>
+    <script src="../static/dist/js/handlebars.js"></script>
+    <script src="../static/dist/js/hogan-3.0.1.js"></script>
+    
+
+    <script src="../static/js/tecnolls.js"></script>
+
 </head>
 
 <body>
@@ -64,7 +87,6 @@
                         <li>
                             <a href="javascript:logout();"><i class="fa fa-edit fa-fw"></i>Logout</a>
                         </li>
-                        
                     {% endif %}
                     
                 </ul>
@@ -112,12 +134,11 @@
             {% include "tecnolls/info_main.html" %}
         </div>
         <!-- /#page-wrapper -->
-
     </div>
     <!-- /#wrapper -->
 
-    <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-sg">
+<div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sg">
         <div id="loginForm" class="modal-content">
             <div class="panel-heading">
                 <h3 class="panel-title">Please Sign In</h3>
@@ -131,35 +152,12 @@
                         <div class="form-group">
                             <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
                         </div>
-                        
-                        <!-- Change this to a button or input when using this as a form -->
                         <a href="javascript:do_login()" class="btn btn-lg btn-success btn-block">Login</a>
                     </fieldset>
                 </form>
             </div>
-
         </div>
-      </div>
     </div>
-    <!-- jQuery -->
-    <script src="../static/bower_components/jquery/dist/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-    <script src="../static/bower_components/bootstrap-tags/js/bootstrap-tags.js"></script>
-
-    <script src="../static/dist/js/sb-admin-2.js"></script>
-
-    <script src="../static/dist/js/editor.js"></script>
-    <script src="../static/dist/js/typeahead.js"></script>
-    <script src="../static/dist/js/bootstrap-tagsinput.js"></script>
-    <script src="../static/dist/js/handlebars.js"></script>
-    <script src="../static/dist/js/hogan-3.0.1.js"></script>
-    
-    <script src="../static/js/tecnolls.js"></script>
+</div>
 </body>
 </html>

@@ -33,12 +33,12 @@
                     </li>
                 </ul>
             </nav>
-            
+
             <div class="panel-body">
                 <ul class="timeline">
                     {% for l in lessons_list %}
                         <li class="{% cycle '' 'timeline-inverted' %}">
-                            <div class="timeline-badge info"><i class="fa fa-credit-card"></i></div>
+                            <div class="timeline-badge info">&nbsp<i class="fa fa-credit-card"></i>&nbsp</div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
                                     <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{l.pub_date}}</small> {{l.author}}
