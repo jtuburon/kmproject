@@ -41,6 +41,8 @@
                             <div class="timeline-badge info">&nbsp<i class="fa fa-credit-card"></i>&nbsp</div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
+                                    <input id="stars-input-{{l.number}}" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="xs" value=3 data-readonly="true">
+                                    <hr>                        
                                     <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{l.pub_date}}</small> {{l.author}}
                                     </p>
                                     <h4 class="timeline-title"><a href="javascript:lesson_show({{l.number}})">Lesson No: {{l.number}} - {{l.title}}</a></h4>
@@ -56,11 +58,18 @@
                                         <p>
                                             <b>Hits Count:</b>  {{l.hits_count}}  of {{l.tags|length}}  tags.
                                         </p>
-                                    {% endif %}
-                                
+                                    {% endif %}                                    
+
                                     <div id="lessontags-{{l.number}}" class="tag-list"></div>
+                                    <br>
+                                    <label for="rate-input-{{l.number}}" class="control-label">Rate This Lesson</label>
+                                    <input id="rate-input-{{l.number}}" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="xs">
+
                                     <script>
                                         $(function() {
+                                            $('#stars-input-{{l.number}}').rating({});
+                                            $('#rate-input-{{l.number}}').rating({});
+
                                             $('#lessontags-{{l.number}}').tags({
                                                 tagData: {% autoescape off%}{% resulttagslabels l %} {% endautoescape %},
                                                 readOnly: true,
