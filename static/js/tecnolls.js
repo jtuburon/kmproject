@@ -9,6 +9,12 @@ function login(){
 	}
 }
 
+function signup(){
+	if($('#signupModal')){
+		$('#signupModal').modal('show')
+	}
+}
+
 function do_login(){
 	var username= $('#username').val();
 	var password= $('#password').val();
@@ -20,6 +26,35 @@ function do_login(){
 	$.ajax({
 	    type: "POST",
 	    url: "users/login",
+	    dataType: "json",
+	    data: data,
+	    success: function (response) {
+			if(response.status==1){
+				location.reload(true);
+			}
+	    },
+	    error: function (request, status, err) {
+	    	console.log(err);
+	    }
+	});
+}
+
+function do_signup(){
+	var firstname= $('#first_name_sign_up').val();
+	var lastname= $('#last_name_sign_up').val();
+	var username= $('#username_sign_up').val();
+	var password= $('#password_sign_up').val();
+	var email= $('#email_sign_up').val();
+	data = {
+		firstname: firstname, 
+		lastname: lastname, 
+		username: username, 
+		password: password, 
+		email: email, 
+	};
+	$.ajax({
+	    type: "POST",
+	    url: "users/signup",
 	    dataType: "json",
 	    data: data,
 	    success: function (response) {

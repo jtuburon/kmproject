@@ -17,7 +17,7 @@ from mongoengine.django.auth import User
 
 def index(request):
 	print request.session
-	context= {}
+	context= {"admin": request.session["admin"]}
 	return render(request, 'tecnolls/index.html', context)
 
 @csrf_exempt
@@ -33,11 +33,27 @@ def login(request):
         if user.check_password(password):
 			user.backend = 'mongoengine.django.auth.MongoEngineBackend'
 			request.session["user"] = user.username
+			request.session["admin"] = user.is_superuser
 			return JsonResponse({'status': 1, "msg": "Login OK"})
         else:
             return JsonResponse({'status': 0, "msg": "Invalid password"})
     except DoesNotExist:
         return JsonResponse({'status': 0, "msg": "Invalid password"})
+
+@csrf_exempt
+def signup(request):
+	firstname= request.POST.get('firstname', '')
+	lastname= request.POST.get('lastname', '')
+	username= request.POST.get('username', '')
+	password= request.POST.get('password', '')
+	email= request.POST.get('email', '')    	
+	user = User(first_name = firstname, last_name= lastname, username= username, password= password,  email= email)
+	user.set_password(password)
+	user.save()
+	user.backend = 'mongoengine.django.auth.MongoEngineBackend'
+	request.session["user"] = user.username
+	request.session["admin"] = user.is_superuser
+	return JsonResponse({'status': 1, "msg": "SignUp OK"})
 
 @csrf_exempt
 def logout(request):

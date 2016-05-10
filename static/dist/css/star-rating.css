@@ -59,6 +59,11 @@
     float: right;
 }
 
+.rate-input-container {
+    float: none;
+    clear: left;
+}
+
 .rating-animate .filled-stars {
     transition: width 0.25s ease;
     -o-transition: width 0.25s ease;
@@ -140,7 +145,7 @@
     color: #999;
     display: inline-block;
     vertical-align: middle;
-    font-size: 60%;
+    font-size: 80%;
     margin-top: -0.6em;
 }
 

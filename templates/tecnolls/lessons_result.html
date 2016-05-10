@@ -61,14 +61,20 @@
                                     {% endif %}                                    
 
                                     <div id="lessontags-{{l.number}}" class="tag-list"></div>
-                                    <br>
-                                    <label for="rate-input-{{l.number}}" class="control-label">Rate This Lesson</label>
-                                    <input id="rate-input-{{l.number}}" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="xs">
-
+                                    
+                                    <div class="rate-input-container">
+                                        <br>
+                                        <label for="rate-input-{{l.number}}" class="control-label">Rate This Lesson</label>
+                                        <input id="rate-input-{{l.number}}" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="xs">
+                                    </div>
                                     <script>
+                                        function setCaption(value){
+                                            return value;
+                                        }
+
                                         $(function() {
-                                            $('#stars-input-{{l.number}}').rating({});
-                                            $('#rate-input-{{l.number}}').rating({});
+                                            $('#stars-input-{{l.number}}').rating({starCaptions: setCaption});
+                                            $('#rate-input-{{l.number}}').rating({starCaptions: setCaption});
 
                                             $('#lessontags-{{l.number}}').tags({
                                                 tagData: {% autoescape off%}{% resulttagslabels l %} {% endautoescape %},

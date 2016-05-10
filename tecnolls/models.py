@@ -22,6 +22,7 @@ class Lesson(Document):
     context= StringField()
     solution= StringField()
     tags = ListField(EmbeddedDocumentField(DomainTag))
+    
 
 
 class LessonResult(Document):

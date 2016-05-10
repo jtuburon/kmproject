@@ -80,7 +80,7 @@
                     </li>
                     {% if not request.session.user %}
                         <li>
-                            <a href="javascript:sign_in();"><i class="fa fa-edit fa-fw"></i> Sign in</a>
+                            <a href="javascript:signup();"><i class="fa fa-edit fa-fw"></i> Sign up</a>
                         </li>
                         <li>
                             <a href="javascript:login();"><i class="fa fa-edit fa-fw"></i> Login</a>
@@ -112,7 +112,7 @@
                         <li>
                             <a href="javascript:lessons_index();"><i class="fa fa-table fa-fw"></i>Search   Lessons</a>
                         </li>
-                        {% if request.session.user %}
+                        {% if request.session.user and admin %}
                         <li class="sidebar-search">
                         </li>
                         <li>
@@ -121,7 +121,6 @@
                         <li>
                             <a href="javascript:tags_index();"><i class="fa fa-table fa-fw"></i>Domain's Tags</a>
                         </li>
-
                         <li class="sidebar-search">
                         </li>
                         <li>
@@ -143,7 +142,7 @@
     <!-- /#wrapper -->
 
 <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sg">
+    <div class="modal-dialog modal-sm">
         <div id="loginForm" class="modal-content">
             <div class="panel-heading">
                 <h3 class="panel-title">Please Sign In</h3>
@@ -158,6 +157,53 @@
                             <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
                         </div>
                         <a href="javascript:do_login()" class="btn btn-lg btn-success btn-block">Login</a>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="signupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sg">
+        <div id="signupForm" class="modal-content">
+            <div class="panel-heading">
+                <h3 class="panel-title">Sign up</h3>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" role="form">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="first_name_sign_up">First Name:</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="first_name_sign_up" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="last_name_sign_up">Last Name:</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="last_name_sign_up" placeholder="Last Name">
+                            </div>
+                        </div>  
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="username_sign_up">Username:</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="username_sign_up" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="password_sign_up">Password:</label>
+                            <div class="col-sm-6">
+                                <input id="password_sign_up" class="form-control" placeholder="Password" name="password" type="password" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="email_sign_up">Email:</label>
+                            <div class="col-sm-6">
+                                <input id="email_sign_up" class="form-control" placeholder="Password" name="password" type="text" value="">
+                            </div>
+                        </div>
+                        <center><a style="width: 40%" href="javascript:do_signup()" class="btn btn-sm btn-success btn-block">Sign Up</a><center>                        
                     </fieldset>
                 </form>
             </div>
