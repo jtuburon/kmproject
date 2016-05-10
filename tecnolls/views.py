@@ -115,28 +115,31 @@ def lessons_new(request):
 
 @csrf_exempt
 def lessons_create(request):
-	project= request.POST.get('project', '')
-	leader= request.POST.get('leader', '')
-	author= request.POST.get('author', '')
-	role= request.POST.get('role', '')
-	title= request.POST.get('title', '')
-	problem= request.POST.get('problem', '')
-	context= request.POST.get('context', '')
-	solution= request.POST.get('solution', '')
+	if "user" in request.session:	
+		project= request.POST.get('project', '')
+		leader= request.POST.get('leader', '')
+		role= request.POST.get('role', '')
+		title= request.POST.get('title', '')
+		problem= request.POST.get('problem', '')
+		context= request.POST.get('context', '')
+		solution= request.POST.get('solution', '')
 
-	lesson = Lesson();
-	lesson.project=project
-	lesson.leader=leader
-	lesson.author=author
-	lesson.role=role
-	lesson.title=title
-	lesson.problem=problem
-	lesson.context=context
-	lesson.solution=solution
+		author= User.objects.get(username= request.session["user"])
+		
+		lesson = Lesson();
+		lesson.project=project
+		lesson.leader=leader
+		lesson.author=author
+		lesson.role=role
+		lesson.title=title
+		lesson.problem=problem
+		lesson.context=context
+		lesson.solution=solution
 
-	lesson.save()
-	return JsonResponse({'status': 1, "msg": "Lesson created succesfully"})
-
+		lesson.save()
+		return JsonResponse({'status': 1, "msg": "Lesson created succesfully"})
+	else:
+		return JsonResponse({'status': 0, "msg": "Lesson was not created. Session is closed"})
 @csrf_exempt
 def lessons_edit(request):
 	lesson_id= request.POST.get('lesson_id', 0)
@@ -149,7 +152,6 @@ def lessons_edit(request):
 def lessons_update(request):
 	project= request.POST.get('project', '')
 	leader= request.POST.get('leader', '')
-	author= request.POST.get('author', '')
 	role= request.POST.get('role', '')
 	title= request.POST.get('title', '')
 	problem= request.POST.get('problem', '')
@@ -162,7 +164,6 @@ def lessons_update(request):
 	if lesson != None:
 		lesson.project=project
 		lesson.leader=leader
-		lesson.author=author
 		lesson.role=role
 		lesson.title=title
 		lesson.problem=problem

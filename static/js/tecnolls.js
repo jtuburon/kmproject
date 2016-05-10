@@ -175,7 +175,6 @@ function new_lesson(){
 function create_lesson(){
 	var project= $('#project').val();
 	var leader= $('#leader').val();
-	var author= $('#author').val();
 	var role= $('#role').val();
 	var title= $('#title').val();
 	var problem= $('#problem').Editor("getText");
@@ -185,7 +184,6 @@ function create_lesson(){
 	data = {
 		project: project, 
 		leader: leader, 
-		author: author, 
 		role: role, 
 		title: title, 
 		problem: problem, 
@@ -225,7 +223,6 @@ function update_lesson(){
 	var lesson_id= $('#number').val();
 	var project= $('#project').val();
 	var leader= $('#leader').val();
-	var author= $('#author').val();
 	var role= $('#role').val();
 	var title= $('#title').val();
 	var problem= $('#problem').Editor("getText");
@@ -236,7 +233,6 @@ function update_lesson(){
 		lesson_id: lesson_id,
 		project: project, 
 		leader: leader, 
-		author: author, 
 		role: role, 
 		title: title, 
 		problem: problem, 

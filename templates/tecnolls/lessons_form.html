@@ -1,3 +1,4 @@
+{% load lessons_extras %}
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h3 class="modal-title" id="lessonModalLabel">
@@ -39,12 +40,14 @@
 			</div>
 		</div>
 
+		{% if lesson %}
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="author">Author:</label>
 			<div class="col-sm-10">
-			  <input {% if readOnly %} disabled="true" {% endif %} type="text" class="form-control" id="author" placeholder="Enter the author" value="{{lesson.author}}">
+			  <input disabled="true" type="text" class="form-control" id="author" placeholder="Enter the author" value="{% fullname lesson.author %}">
 			</div>
 		</div>
+		{% endif %}
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="role">Role:</label>
