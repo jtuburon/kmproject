@@ -16,8 +16,7 @@ from mongoengine.django.auth import User
 # Create your views here.
 
 def index(request):
-	print request.session
-	context= {"admin": request.session["admin"]}
+	context= {"admin": request.session["admin"]} if "admin" in request.session else {}
 	return render(request, 'tecnolls/index.html', context)
 
 @csrf_exempt
@@ -58,6 +57,7 @@ def signup(request):
 @csrf_exempt
 def logout(request):
 	del request.session["user"]
+	del request.session["admin"]
 	return JsonResponse({'status': 1, "msg": "Logout OK"})
 
 def users_main(request):

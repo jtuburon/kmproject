@@ -109,9 +109,12 @@
                         </li>
                         <li class="sidebar-search">
                         </li>
-                        <li>
-                            <a href="javascript:lessons_index();"><i class="fa fa-table fa-fw"></i>Search   Lessons</a>
-                        </li>
+                        
+                        {% if request.session.user%}
+                            <li>
+                                <a href="javascript:lessons_index();"><i class="fa fa-table fa-fw"></i>Search   Lessons</a>
+                            </li>
+                        {% endif %}
                         {% if request.session.user and admin %}
                         <li class="sidebar-search">
                         </li>

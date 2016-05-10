@@ -9,12 +9,15 @@ PAGE_SIZE=5
 
 def get_users_list_with_filter(filter_type, filter_text, page):
 	filter_p={}
-	filters_list=[]
+	print filter_type
+	print filter_text
 	pattern= re.compile(filter_text, re.IGNORECASE)
 	filter_p= {filter_type: pattern}
+
 	print filter_p
 	users = []
 	users_list = User.objects(__raw__=filter_p).order_by('username')
+	print users_list
 	paginator = Paginator(users_list, PAGE_SIZE) # Show 25 contacts per page
 	try:
 		users = paginator.page(page)

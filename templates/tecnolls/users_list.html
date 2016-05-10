@@ -9,7 +9,7 @@
           <ul class="pagination">
             <li>
               {% if users_list.has_previous %}
-              <a href="javascript:filter_tags({{ users_list.previous_page_number }})" aria-label="Previous">
+              <a href="javascript:filter_users({{ users_list.previous_page_number }})" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>
               {% else %}
@@ -21,7 +21,7 @@
                 </span></li>
             <li>
               {% if users_list.has_next %}
-              <a href="javascript:filter_tags({{ users_list.next_page_number }})" aria-label="Next">
+              <a href="javascript:filter_users({{ users_list.next_page_number }})" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
               {% else %}
@@ -35,7 +35,7 @@
                 <table class="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
-                            <th>Admin</th>
+                            <th>Role</th>
                             <th>Username</th>
                             <th>Name</th>
                             <th>Lastname</th>
