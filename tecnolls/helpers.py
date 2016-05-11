@@ -64,6 +64,9 @@ def get_lessons_list_with_tags(query_tags, page):
 			lesson.hits_count= l['hitsCount']
 		lesson.rate_avg= calculate_avg_rate(l)
 		lessons_list.append(lesson)
+	if len(query_tags)!=0:
+		lessons_list = sorted(lessons_list, key= lambda l: (l.hits_count, l.rate_avg), reverse= True)
+	
 	paginator = Paginator(lessons_list, PAGE_SIZE) # Show 25 contacts per page
 	try:
 		lessons = paginator.page(page)
