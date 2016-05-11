@@ -66,6 +66,10 @@
                                         <br>
                                         <label for="rate-input-{{l.number}}" class="control-label">Rate This Lesson</label>
                                         <input id="rate-input-{{l.number}}" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="xs">
+                                        <br>
+                                        <div id="rate-info-{{l.number}}" class="alert alert-success" style="display:none;width:60%">
+                                          <strong>Lesson rated succesfully!!</strong>
+                                        </div>
                                     </div>
                                     <script>
                                         function setCaption(value){
@@ -81,6 +85,14 @@
                                                 readOnly: true,
                                                 tagSize: "sm"
                                             });
+
+                                            $('#rate-input-{{l.number}}').on(
+                                                'rating.change', 
+                                                function(event, value, caption) {
+                                                    lesson_rate({{l.number}}, value);
+                                                }
+                                            );
+
                                         });
                                     </script>                                
                                 </div>

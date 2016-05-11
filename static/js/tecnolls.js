@@ -267,6 +267,25 @@ function lesson_show(lesson_id){
 		}
 	});
 }
+
+function lesson_rate(lesson_id, lesson_rate){
+	data= {lesson_id: lesson_id, lesson_rate: lesson_rate}
+	$.ajax({
+	    type: "POST",
+	    url: "lessons/rate",
+	    dataType: "json",
+	    data: data,
+	    success: function (response) {
+			if(response.status==1){
+				$('#rate-info-'+lesson_id).fadeIn("slow");
+				$('#rate-info-'+lesson_id).fadeOut("slow");
+			}
+	    },
+	    error: function (request, status, err) {
+	    	console.log(err);
+	    }
+	});
+}
 /*
 -------------------------------------------------
 Tags Functions

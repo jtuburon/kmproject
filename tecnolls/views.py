@@ -183,6 +183,19 @@ def lessons_show(request):
 	return render(request, 'tecnolls/lessons_form.html', context)
 
 
+@csrf_exempt
+def lessons_rate(request):
+	lesson_id= request.POST.get('lesson_id', 0)
+	lesson_rate= request.POST.get('lesson_rate', 0)
+	lesson = Lesson.objects.get(number=lesson_id) if lesson_id>0 else None
+	if lesson_id != None:
+		user= User.objects.get(username= request.session["user"])
+		rate = LessonRate(rate= lesson_rate, user=user)
+		lesson.rates.append(rate)
+		lesson.save()
+		return JsonResponse({'status': 1, "msg": "Lesson was rated succesfully"})
+	else:
+		return JsonResponse({'status': 1, "msg": "Lesson was not rated"})
 
 def tags_main(request):
 	context = {}

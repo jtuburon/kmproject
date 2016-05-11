@@ -4,18 +4,22 @@ from mongoengine import *
 import datetime
 from mongoengine.django.auth import User
 
+# Create your models here.
 
 class DomainTag(EmbeddedDocument):
     uri= URLField(max_length=250)
     label= StringField(max_length=200)
 
-# Create your models here.
+class LessonRate(EmbeddedDocument):
+    user= ReferenceField(User)
+    date= DateTimeField(default=datetime.datetime.now, help_text='date rated')
+    rate= DecimalField(precision=1)
+
 class Lesson(Document):
     number= SequenceField(unique=True)
     project= StringField(max_length=200)
     leader= StringField(max_length=200)
     pub_date = DateTimeField(default=datetime.datetime.now, help_text='date published')
-    #author= StringField(max_length=200)
     author = ReferenceField(User)
     role= StringField(max_length=200)
     title= StringField(max_length=400)
@@ -23,8 +27,7 @@ class Lesson(Document):
     context= StringField()
     solution= StringField()
     tags = ListField(EmbeddedDocumentField(DomainTag))
-    
-
+    rates = ListField(EmbeddedDocumentField(LessonRate))
 
 class LessonResult(Document):
     number= IntField()
