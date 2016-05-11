@@ -23,35 +23,50 @@ def get_users_list_with_filter(filter_type, filter_text, page):
 		users = paginator.page(paginator.num_pages)
 	return users
 
-def calculate_avg_rate(l):
-	avg_result = Lesson._get_collection().aggregate([
-					{"$match": {"number": l['number'] }},
-					{ "$project": {
-					    "_id": "$$ROOT",
-					    "rates": 1
-					}},
-					{ "$unwind": "$rates" },                                                                                                                                                                          
-					{ "$group": {
-					    "_id": "$_id",
-					    "rating": { "$avg": "$rates.rate" },
-					}},
-				])['result']
-	return avg_result[0]['rating'] if len(avg_result) >0 else None
-
 def get_lessons_list_with_tags(query_tags, page):
 	lessons = []
 	lessons_list =[]
 	if len(query_tags)==0:
-		t_lessons_list = Lesson.objects().all().order_by('-number')
+		t_lessons_list = Lesson._get_collection().aggregate([
+			{"$unwind": {"path": "$rates", "preserveNullAndEmptyArrays": True}},
+			{"$group": {
+				"_id":  "$_id", 
+				"number": {"$first": "$number"},
+				"pub_date": {"$first": "$pub_date"},
+				"author": {"$first": "$author"},
+				"title": {"$first": "$title"},
+				"problem": {"$first": "$problem"},
+				"tags": {"$first": "$tags"},
+				"hitsCount": {"$first": "$hitsCount"},
+				"problem": {"$first": "$problem"},
+				"rating": { "$avg": "$rates.rate" }
+			}},
+			{"$sort": {"rating":-1}}
+		])["result"];
 	else:		
 		t_lessons_list = Lesson._get_collection().aggregate([
-			{"$project": {"hits": { "$setIntersection":[ "$tags.label", query_tags ]}, "_id": 1, "number": 1, "pub_date": 1 , "author": 1 , "title": 1 , "problem": 1, "tags": 1}},
-			{"$project": {"hits": 1, "hitsCount": { "$size": "$hits"}, "tagsCount": { "$size": "$tags"}, "_id": 1, "number": 1, "pub_date": 1 , "author": 1 , "title": 1 , "problem": 1, "tags": 1}},
+			{"$project": {"hits": { "$setIntersection":[ "$tags.label", ["ORM"] ]}, "_id": 1, "number": 1, "pub_date": 1 , "author": 1 , "title": 1 , "problem": 1, "tags": 1, "rates": 1}},
+			{"$project": {"hits": 1, "hitsCount": { "$size": "$hits"}, "tagsCount": { "$size": "$tags"}, "_id": 1, "number": 1, "pub_date": 1 , "author": 1 , "title": 1 , "problem": 1, "tags": 1, "rates": 1}},
 			{"$match": {"hitsCount": {"$gt": 0 }} },
-			{"$sort": {"hitsCount":-1, "tagsCount":1}}
-		])["result"]
+			{"$unwind": {"path": "$rates", "preserveNullAndEmptyArrays": True}},
+			{"$group": {
+				"_id":  "$_id", 
+				"number": {"$first": "$number"},
+				"pub_date": {"$first": "$pub_date"},
+				"author": {"$first": "$author"},
+				"title": {"$first": "$title"},
+				"problem": {"$first": "$problem"},
+				"tags": {"$first": "$tags"},
+				"hits": {"$first": "$hits"},
+				"hitsCount": {"$first": "$hitsCount"},
+				"problem": {"$first": "$problem"},
+				"rating": { "$avg": "$rates.rate" }
+			}},
+			{"$sort": {"hitsCount":-1, "tagsCount":1, "rating": -1}}
+		])["result"];
+
 	for l in t_lessons_list:
-		author = l['author'] if len(query_tags)==0 else User.objects().get(id= l['author'])			
+		author = User.objects().get(id= l['author'])			
 		lesson = LessonResult()
 		lesson.number= l['number']
 		lesson.author= author
@@ -62,11 +77,8 @@ def get_lessons_list_with_tags(query_tags, page):
 		if len(query_tags)!=0:
 			lesson.hits= l['hits']
 			lesson.hits_count= l['hitsCount']
-		lesson.rate_avg= calculate_avg_rate(l)
+		lesson.rate_avg= l['rating']
 		lessons_list.append(lesson)
-	if len(query_tags)!=0:
-		lessons_list = sorted(lessons_list, key= lambda l: (l.hits_count, l.rate_avg), reverse= True)
-	
 	paginator = Paginator(lessons_list, PAGE_SIZE) # Show 25 contacts per page
 	try:
 		lessons = paginator.page(page)
@@ -111,8 +123,10 @@ def get_lessons_list_with_filter(filter_type, filter_text, page):
 		lesson.title= l['title']
 		lesson.problem= l['problem']
 		lesson.tags= l['tags']
-		lesson.rate_avg= calculate_avg_rate(l)
+		lesson.rate_avg= l.rate_avg
+
 		lessons_list.append(lesson)
+	lessons_list = sorted(lessons_list, key= lambda l: l.rate_avg, reverse=True)	
 	paginator = Paginator(lessons_list, PAGE_SIZE) # Show 25 contacts per page
 	try:
 		lessons = paginator.page(page)

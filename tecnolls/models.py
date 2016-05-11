@@ -29,6 +29,10 @@ class Lesson(Document):
     tags = ListField(EmbeddedDocumentField(DomainTag))
     rates = ListField(EmbeddedDocumentField(LessonRate))
 
+    @property
+    def rate_avg(self):
+        return  sum([r.rate for r in self.rates])/ len(self.rates) if len(self.rates)>0 else None
+
 class LessonResult(Document):
     number= IntField()
     pub_date = DateTimeField(default=datetime.datetime.now, help_text='date published')
