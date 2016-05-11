@@ -37,6 +37,7 @@
                         <div class="timeline-badge info">&nbsp<i class="fa fa-credit-card">&nbsp</i></div>
                         <div class="timeline-panel">
                             <div class="timeline-heading">
+                                <input id="stars-input-{{l.number}}" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="xs" data-readonly="true">
                                 <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{l.pub_date}}</small> {{l.author}}
                                 </p>
                                 <h4 class="timeline-title"><a href="javascript:lesson_edit({{l.number}})">Lesson No: {{l.number}} - {{l.title}}</a></h4>
@@ -51,6 +52,17 @@
                                 <input id="lessontags-{{l.number}}" type="text" value="{% tagslabels l %}" data-role="tagsinput"></input>
                                 {% autoescape off%}
                                 <script>
+                                    function setCaption(value){
+                                        return value;
+                                    }
+
+                                    $('#stars-input-{{l.number}}').rating({starCaptions: setCaption});
+
+                                    {% if l.rate_avg %} 
+                                        $('#stars-input-{{l.number}}').rating('update', {{l.rate_avg}});
+                                    {% endif %}
+
+
                                     $('#lessontags-{{l.number}}').tagsinput({
                                       typeaheadjs: {
                                         name: 'typeaheadSource',

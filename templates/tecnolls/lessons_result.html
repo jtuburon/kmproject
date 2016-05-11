@@ -41,7 +41,7 @@
                             <div class="timeline-badge info">&nbsp<i class="fa fa-credit-card"></i>&nbsp</div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
-                                    <input id="stars-input-{{l.number}}" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="xs" value=3 data-readonly="true">
+                                    <input id="stars-input-{{l.number}}" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="xs" data-readonly="true">
                                     <hr>                        
                                     <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{l.pub_date}}</small> {% fullname l.author%}
                                     </p>
@@ -92,7 +92,12 @@
                                                     lesson_rate({{l.number}}, value);
                                                 }
                                             );
+                                            {% if l.rate_avg %} 
+                                                $('#stars-input-{{l.number}}').rating('update', {{l.rate_avg}});
 
+
+                                            {% endif %}
+                                            
                                         });
                                     </script>                                
                                 </div>

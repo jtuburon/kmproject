@@ -24,11 +24,7 @@ def login(request):
     try:
     	username= request.POST.get('username', '')
     	password= request.POST.get('password', '')
-    	print username
-    	print password
-        user = User.objects.get(username= username)
-        print "WAPEEOOOO"
-        print user.username
+    	user = User.objects.get(username= username)
         if user.check_password(password):
 			user.backend = 'mongoengine.django.auth.MongoEngineBackend'
 			request.session["user"] = user.username
@@ -101,7 +97,6 @@ def lessons_filter(request):
 @csrf_exempt
 def lessons_search(request):
 	query_tags = request.POST.getlist('query_tags[]')
-	print query_tags
 	page= int(request.POST.get('page', '1'))
 	lessons_list= []
 	lessons_list= get_lessons_list_with_tags(query_tags, page)
@@ -160,7 +155,6 @@ def lessons_update(request):
 
 	lesson_id= request.POST.get('lesson_id', 0)
 	lesson = Lesson.objects.get(number=lesson_id) if lesson_id>0 else None
-	print lesson_id
 	if lesson != None:
 		lesson.project=project
 		lesson.leader=leader
@@ -224,7 +218,6 @@ def lessons_add_tag(request):
 	label= request.POST.get('tag[label]')
 	l= Lesson.objects.get(number=lesson_id)
 	if l != None and uri!= None and label!=None:
-		print l.tags
 		ed = DomainTag(label= label, uri= uri)
 		l.tags.append(ed)
 		l.save()
@@ -234,16 +227,12 @@ def lessons_add_tag(request):
 def lessons_remove_tag(request):
 	lesson_id= request.POST.get('lesson_id', 0)
 	uri= request.POST.get('tag[uri]')
-	print uri
 	l= Lesson.objects.get(number=lesson_id)
 	if l != None:
-		print l.tags
 		map={}
 		for t in l.tags:
 			map[t.uri]=t
 		del map[uri]
-		print "VALUES"
-		print map.values()
 		l.tags= map.values()
 		l.save()
 	return JsonResponse({'status': 1, "msg": "Tag removed succesfully"})

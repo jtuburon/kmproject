@@ -32,9 +32,10 @@ class Lesson(Document):
 class LessonResult(Document):
     number= IntField()
     pub_date = DateTimeField(default=datetime.datetime.now, help_text='date published')
-    author= StringField(max_length=200)
+    author = ReferenceField(User)
     title= StringField(max_length=400)
     problem= StringField()
     tags = ListField(EmbeddedDocumentField(DomainTag))
     hits = ListField(StringField())
     hits_count = IntField();
+    rate_avg= DecimalField(precision=1)
