@@ -3,7 +3,11 @@
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h3 class="modal-title" id="lessonModalLabel">
 	 	{% if lesson %}
-	 		Edit Lesson Learned
+	 		{% if readOnly %}
+	 			Lesson Learned Info
+	 		{% else %}
+	 			Edit Lesson Learned
+	 		{% endif %}
         {% else %}
     		New Lesson Learned
         {% endif %}

@@ -131,6 +131,15 @@ Lessons Functions
 */
 function lessons_index(){
     $('#page-wrapper').load('lessons/index', function(){
+    	$('#lessons_filter_text').bind("enterKey",function(e){
+           filter_lessons(1);
+        });
+        $('#lessons_filter_text').keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                $(this).trigger("enterKey");
+            }
+        });
         search_lessons(1)
     });
 }

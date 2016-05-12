@@ -45,7 +45,13 @@
                                     <hr>                        
                                     <p><small class="text-muted"><i class="fa fa-clock-o"></i>{{l.pub_date}}</small> {% fullname l.author%}
                                     </p>
-                                    <h4 class="timeline-title"><a href="javascript:lesson_show({{l.number}})">Lesson No: {{l.number}} - {{l.title}}</a></h4>
+                                    
+                                    <h4 class="timeline-title"><a href="{% if admin %}javascript:lesson_edit({{l.number}}){% else %}javascript:lesson_show({{l.number}}){% endif %}">Lesson No: {{l.number}} - {{l.title}}</a></h4>     
+
+                                    <!--h4 class="timeline-title"><a href="javascript:lesson_edit({{l.number}})">Lesson No: {{l.number}} - {{l.title}}</a></h4>     
+
+                                    <h4 class="timeline-title"><a href="javascript:lesson_show({{l.number}})">Lesson No: {{l.number}} - {{l.title}}</a></h4-->
+                                    
                                 </div>
                                 <div class="timeline-body">
                                     <p>
@@ -58,46 +64,120 @@
                                         <p>
                                             <b>Hits Count:</b>  {{l.hits_count}}  of {{l.tags|length}}  tags.
                                         </p>
-                                    {% endif %}                                    
+                                    {% endif %}    
+                                    {% if admin %}
+                                        <input id="lessontags-{{l.number}}" type="text" value="{% tagslabels l %}" data-role="tagsinput"></input>
+                                        <script>
+                                            function setCaption(value){
+                                                return value;
+                                            }
 
-                                    <div id="lessontags-{{l.number}}" class="tag-list"></div>
-                                    
-                                    <div class="rate-input-container">
-                                        <br>
-                                        <label for="rate-input-{{l.number}}" class="control-label">Rate This Lesson</label>
-                                        <input id="rate-input-{{l.number}}" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="xs">
-                                        <br>
-                                        <div id="rate-info-{{l.number}}" class="alert alert-success" style="display:none;width:60%">
-                                          <strong>Lesson rated succesfully!!</strong>
-                                        </div>
-                                    </div>
-                                    <script>
-                                        function setCaption(value){
-                                            return value;
-                                        }
+                                            $(function() {
+                                                $('#stars-input-{{l.number}}').rating({starCaptions: setCaption});
+                                                {% if l.rate_avg %} 
+                                                    $('#stars-input-{{l.number}}').rating('update', {{l.rate_avg}});
+                                                {% endif %}
 
-                                        $(function() {
-                                            $('#stars-input-{{l.number}}').rating({starCaptions: setCaption});
-                                            $('#rate-input-{{l.number}}').rating({starCaptions: setCaption});
+                                                $('#lessontags-{{l.number}}').tagsinput({
+                                                  typeaheadjs: {
+                                                    name: 'typeaheadSource',
+                                                    displayKey: 'label',
+                                                    valueKey: 'label',
+                                                    freeInput: false,
+                                                    source: typeaheadSource.ttAdapter(),
+                                                    templates: tagSuggestionTemplate,
+                                                    engine: Hogan,
+                                                  }
+                                                });
 
-                                            $('#lessontags-{{l.number}}').tags({
-                                                tagData: {% autoescape off%}{% resulttagslabels l %} {% endautoescape %},
-                                                readOnly: true,
-                                                tagSize: "sm"
+                                                $('#lessontags-{{l.number}}').on('beforeItemAdd', function(event) {
+                                                    var t_key = event.item
+                                                    var t=typeaheadSource.get(t_key)[0];
+                                                    console.log(t);
+                                                    
+                                                    $.ajax({
+                                                        url: 'lessons/add_tag',
+                                                        method: 'POST',
+                                                        data: {"lesson_id": {{l.number}} , "tag": t},
+                                                        success: function(response) {
+                                                            console.log(response);
+                                                            if (response.failure) {
+                                                                //$('#tags-input').tagsinput('remove', t_key, {preventPost: true});
+                                                                event.cancel= true;
+                                                            }
+                                                        }, 
+                                                        error: function(error){
+                                                            console.log(error);
+                                                            event.cancel= true;
+                                                        }
+                                                    });
+                                                    
+                                                });
+
+                                                $('#lessontags-{{l.number}}').on('beforeItemRemove', function(event) {
+                                                    var t_key = event.item
+                                                    var t=typeaheadSource.get(t_key)[0];
+                                                    console.log(t);
+                                                    
+                                                    $.ajax({
+                                                        url: 'lessons/remove_tag',
+                                                        method: 'POST',
+                                                        data: {"lesson_id": {{l.number}} , "tag": t},
+                                                        success: function(response) {
+                                                            console.log(response);
+                                                            if (response.failure) {
+                                                                //$('#tags-input').tagsinput('remove', t_key, {preventPost: true});
+                                                                event.cancel= true;
+                                                            }
+                                                        }, 
+                                                        error: function(error){
+                                                            console.log(error);
+                                                            event.cancel= true;
+                                                        }
+                                                    });
+                                                    
+                                                });
                                             });
+                                        </script>                                
+                                    {% else %}
+                                        <div id="lessontags-{{l.number}}" class="tag-list"></div>
+                                        <div class="rate-input-container">
+                                            <br>
+                                            <label for="rate-input-{{l.number}}" class="control-label">Rate This Lesson</label>
+                                            <input id="rate-input-{{l.number}}" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="xs">
+                                            <br>
+                                            <div id="rate-info-{{l.number}}" class="alert alert-success" style="display:none;width:60%">
+                                              <strong>Lesson rated succesfully!!</strong>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            function setCaption(value){
+                                                return value;
+                                            }
 
-                                            $('#rate-input-{{l.number}}').on(
-                                                'rating.change', 
-                                                function(event, value, caption) {
-                                                    lesson_rate({{l.number}}, value);
-                                                }
-                                            );
-                                            {% if l.rate_avg %} 
-                                                $('#stars-input-{{l.number}}').rating('update', {{l.rate_avg}});
-                                            {% endif %}
-                                            
-                                        });
-                                    </script>                                
+                                            $(function() {
+                                                $('#stars-input-{{l.number}}').rating({starCaptions: setCaption});
+                                                $('#rate-input-{{l.number}}').rating({starCaptions: setCaption});
+
+                                                $('#lessontags-{{l.number}}').tags({
+                                                    tagData: {% autoescape off%}{% resulttagslabels l %} {% endautoescape %},
+                                                    readOnly: true,
+                                                    tagSize: "sm"
+                                                });
+
+                                                $('#rate-input-{{l.number}}').on(
+                                                    'rating.change', 
+                                                    function(event, value, caption) {
+                                                        lesson_rate({{l.number}}, value);
+                                                    }
+                                                );
+                                                {% if l.rate_avg %} 
+                                                    $('#stars-input-{{l.number}}').rating('update', {{l.rate_avg}});
+                                                {% endif %}
+                                                
+                                            });
+                                        </script>
+                                    {% endif %}                                
                                 </div>
                             </div>
                         </li>

@@ -111,24 +111,23 @@
                         </li>
                         
                         {% if request.session.user%}
-                            <li>
-                                <a href="javascript:lessons_index();"><i class="fa fa-table fa-fw"></i>Search   Lessons</a>
-                            </li>
-                        {% endif %}
-                        {% if request.session.user and admin %}
-                        <li class="sidebar-search">
-                        </li>
-                        <li>
-                            <a href="javascript:lessons_admin();"><i class="fa fa-table fa-fw"></i>Lessons' Admin</a>
-                        </li>
-                        <li>
-                            <a href="javascript:tags_index();"><i class="fa fa-table fa-fw"></i>Domain's Tags</a>
-                        </li>
-                        <li class="sidebar-search">
-                        </li>
-                        <li>
-                            <a href="javascript:users_index();"><i class="fa fa-table fa-fw"></i>User's Admin</a>
-                        </li>
+                            {% if admin %}
+                                <li>
+                                    <a href="javascript:lessons_index();"><i class="fa fa-table fa-fw"></i>Lessons' Admin</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:tags_index();"><i class="fa fa-table fa-fw"></i>Domain's Tags</a>
+                                </li>
+                                <li class="sidebar-search">
+                                </li>
+                                <li>
+                                    <a href="javascript:users_index();"><i class="fa fa-table fa-fw"></i>User's Admin</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="javascript:lessons_index();"><i class="fa fa-table fa-fw"></i>Search Lessons</a>
+                                </li>
+                            {% endif %}
                         {% endif %}
                     </ul>
                 </div>

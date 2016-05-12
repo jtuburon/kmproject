@@ -91,8 +91,10 @@ def lessons_filter(request):
 
 	lessons_list= []
 	lessons_list= get_lessons_list_with_filter(filter_type, filter_text, page)
-	context = {"lessons_list": lessons_list}
-	return render(request, 'tecnolls/lessons_list.html', context)
+
+	context= {"admin": request.session["admin"]} if "admin" in request.session else {}
+	context["lessons_list"]= lessons_list
+	return render(request, 'tecnolls/lessons_result.html', context)
 
 @csrf_exempt
 def lessons_search(request):
@@ -100,7 +102,8 @@ def lessons_search(request):
 	page= int(request.POST.get('page', '1'))
 	lessons_list= []
 	lessons_list= get_lessons_list_with_tags(query_tags, page)
-	context = {"lessons_list": lessons_list}
+	context= {"admin": request.session["admin"]} if "admin" in request.session else {}
+	context["lessons_list"]= lessons_list
 	return render(request, 'tecnolls/lessons_result.html', context)
 
 def lessons_new(request):
