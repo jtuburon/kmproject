@@ -86,6 +86,52 @@ function logout(){
 	});
 }
 
+function viewProfile(){
+	data= {};
+    $('#profileForm').html('');
+	$('#profileForm').load('users/profile', data,  function(){
+		if($('#profileModal')){
+			$('#profileModal').modal('show')
+		}
+	});
+}
+
+
+function update_profile(){
+	var username= $('#username_profile').val();
+	var first_name= $('#first_name_profile').val();
+	var last_name= $('#last_name_profile').val();
+	var email= $('#email_profile').val();
+	var change_passwd= $('#change_passwd').prop('checked');
+	var passwd= $('#passwd_profile').val();
+
+	data = {
+		username: username,
+		first_name: first_name, 
+		last_name: last_name, 
+		email: email, 
+		change_passwd: change_passwd, 
+		passwd: passwd
+	};
+
+	$.ajax({
+	    type: "POST",
+	    url: "users/update",
+	    dataType: "json",
+	    data: data,
+	    success: function (response) {
+			console.log(response)
+			if(response.status==1){
+				$('#profileModal').modal('hide');
+			}
+	    },
+	    error: function (request, status, err) {
+	    	console.log(err);
+	    }
+	});
+}
+
+
 /*
 -------------------------------------------------
 User's Admin Functions
@@ -113,6 +159,23 @@ function filter_users(page){
 	data = {filter_type: filter_type, filter_text: filter_text, page: page}
 	$('#users_div').load('users/filter', data);
 }
+
+function activate_user(username, state){
+	data = {username: username, state: state}
+	$.ajax({
+	    type: "POST",
+	    url: "users/activate",
+	    dataType: "json",
+	    data: data,
+	    success: function (response) {
+			
+	    },
+	    error: function (request, status, err) {
+	    	console.log(err);
+	    }
+	});
+}
+
 
 /*
 -------------------------------------------------

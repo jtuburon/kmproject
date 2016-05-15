@@ -22,18 +22,21 @@ def index(request):
 @csrf_exempt
 def login(request):
     try:
-    	username= request.POST.get('username', '')
-    	password= request.POST.get('password', '')
-    	user = User.objects.get(username= username)
-        if user.check_password(password):
-			user.backend = 'mongoengine.django.auth.MongoEngineBackend'
-			request.session["user"] = user.username
-			request.session["admin"] = user.is_superuser
-			return JsonResponse({'status': 1, "msg": "Login OK"})
-        else:
-            return JsonResponse({'status': 0, "msg": "Invalid password"})
+		username= request.POST.get('username', '')
+		password= request.POST.get('password', '')
+		user = User.objects.get(username= username)
+		if user.is_active==True:
+			if user.check_password(password):
+				user.backend = 'mongoengine.django.auth.MongoEngineBackend'
+				request.session["user"] = user.username
+				request.session["admin"] = user.is_superuser
+				return JsonResponse({'status': 1, "msg": "Login OK"})
+			else:
+				return JsonResponse({'status': 0, "msg": "Invalid password"})
+		else:
+			return JsonResponse({'status': 0, "msg": "User is not active"})
     except DoesNotExist:
-        return JsonResponse({'status': 0, "msg": "Invalid password"})
+        return JsonResponse({'status': 0, "msg": "Invalid username"})
 
 @csrf_exempt
 def signup(request):
@@ -60,6 +63,44 @@ def users_main(request):
 	context = {}
 	return render(request, 'tecnolls/users_main.html', context)
 
+@csrf_exempt
+def users_profile(request):
+	user = User.objects.get(username=request.session["user"])
+	print user
+	print user.first_name
+	context = {"user": user}
+	return render(request, 'tecnolls/profile_form.html', context)
+
+@csrf_exempt
+def users_update(request):
+	username= request.POST.get('username', '')
+	if(username==request.session["user"]):
+		first_name= request.POST.get('first_name', '')
+		last_name= request.POST.get('last_name', '')
+		email= request.POST.get('email', '')
+		change_passwd= request.POST.get('change_passwd', '')
+		passwd= request.POST.get('passwd', '')
+
+		user = User.objects.get(username=request.session["user"])
+		user.first_name= first_name
+		user.last_name= last_name
+		user.email= email
+		if change_passwd=="true":
+			user.set_password(passwd)
+		user.save()
+		return JsonResponse({'status': 1, "msg": "User profile updated succesfully"})
+	else:
+		return JsonResponse({'status': 0, "msg": "Invalid User"})
+
+@csrf_exempt
+def users_activate(request):
+	username= request.POST.get('username', '')
+	state= request.POST.get('state', '')
+	user = User.objects.get(username=username)
+	user.is_active=True if state=="true" else False
+	print user.is_active
+	user.save()
+	return JsonResponse({'status': 1, "msg": "User Activation action applied succesfully"})
 
 @csrf_exempt
 def users_filter(request):

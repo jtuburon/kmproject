@@ -1,0 +1,58 @@
+
+<div class="panel-heading">
+    <h3 class="panel-title">My Profile</h3>
+</div>
+<div class="panel-body">
+    <form class="form-horizontal" role="form">
+        <fieldset>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="username_profile">Username:</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="username_profile" placeholder="Username" value="{{user.username}}" disabled="true">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="first_name_profile">First Name:</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="first_name_profile" placeholder="First Name" value="{{user.first_name}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="last_name_profile">Last Name:</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="last_name_profile" placeholder="Last Name" value="{{user.last_name}}">
+                </div>
+            </div>  
+
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="email_profile">Email:</label>
+                <div class="col-sm-6">
+                    <input id="email_profile" class="form-control" placeholder="Email" name="email" type="text" value="{{user.email}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="change_passwd"></label>
+                <div class="col-sm-6">
+                    <input id="change_passwd" type="checkbox"> Change Password
+                </div>
+                <label class="control-label col-sm-4" for="passwd_profile">Password:</label>
+                <div class="col-sm-6">
+                    <input disabled="true" id="passwd_profile" class="form-control" placeholder="Password" name="password" type="password" value="">
+                </div>
+                <script type="text/javascript">
+                    $('#change_passwd').click(function(){
+                        if (this.checked) {
+                            $('#passwd_profile').prop( "disabled", false );
+                        }else{
+                            $('#passwd_profile').prop( "disabled", true );
+                        }
+                    });
+                </script>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" onclick="javascript:update_profile()" data-dismiss="modal">Update Profile</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>

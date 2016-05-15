@@ -36,6 +36,7 @@
     <link href="../static/dist/css/bootstrap-tagsinput-typeahead.css" rel="stylesheet">
 
     <link href="../static/dist/css/star-rating.css" rel="stylesheet">
+    <link href="../static/dist/css/bootstrap-switch.css" rel="stylesheet">
 
 
 
@@ -59,6 +60,7 @@
     <script src="../static/dist/js/hogan-3.0.1.js"></script>
     
     <script src="../static/dist/js/star-rating.js"></script>
+    <script src="../static/dist/js/bootstrap-switch.js"></script>
 
     <script src="../static/js/tecnolls.js"></script>
 
@@ -87,7 +89,7 @@
                         </li>
                     {% else %}
                         <li>
-                            <a href="#"></i>Welcome to, {{request.session.user}}</a>
+                            <a href="javascript:viewProfile()"><i class="fa fa-user-md fa-fw" aria-hidden="true"></i>{{request.session.user}}</a>
                         </li>
                         <li>
                             <a href="javascript:logout();"><i class="fa fa-edit fa-fw"></i>Logout</a>
@@ -142,75 +144,85 @@
         <!-- /#page-wrapper -->
     </div>
     <!-- /#wrapper -->
-
-<div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div id="loginForm" class="modal-content">
-            <div class="panel-heading">
-                <h3 class="panel-title">Please Sign In</h3>
-            </div>
-            <div class="panel-body">
-                <form role="form">
-                    <fieldset>
-                        <div class="form-group">
-                            <input id="username" class="form-control" placeholder="username" name="username" type="text" autofocus>
-                        </div>
-                        <div class="form-group">
-                            <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
-                        </div>
-                        <a href="javascript:do_login()" class="btn btn-lg btn-success btn-block">Login</a>
-                    </fieldset>
-                </form>
+{% if request.session.user %}
+    <div id="profileModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sg">
+            <div id="profileForm" class="modal-content"></div>
+        </div>    
+    </div>
+{% else %}
+    <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div id="loginForm" class="modal-content">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Please Sign In</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <input id="username" class="form-control" placeholder="username" name="username" type="text" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                            </div>
+                            <a href="javascript:do_login()" class="btn btn-lg btn-success btn-block">Login</a>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div id="signupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sg">
-        <div id="signupForm" class="modal-content">
-            <div class="panel-heading">
-                <h3 class="panel-title">Sign up</h3>
-            </div>
-            <div class="panel-body">
-                <form class="form-horizontal" role="form">
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="first_name_sign_up">First Name:</label>
-                            <div class="col-sm-6">
-                              <input type="text" class="form-control" id="first_name_sign_up" placeholder="First Name">
+    <div id="signupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sg">
+            <div id="signupForm" class="modal-content">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Sign up</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="first_name_sign_up">First Name:</label>
+                                <div class="col-sm-6">
+                                  <input type="text" class="form-control" id="first_name_sign_up" placeholder="First Name">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="last_name_sign_up">Last Name:</label>
-                            <div class="col-sm-6">
-                              <input type="text" class="form-control" id="last_name_sign_up" placeholder="Last Name">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="last_name_sign_up">Last Name:</label>
+                                <div class="col-sm-6">
+                                  <input type="text" class="form-control" id="last_name_sign_up" placeholder="Last Name">
+                                </div>
+                            </div>  
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="username_sign_up">Username:</label>
+                                <div class="col-sm-6">
+                                  <input type="text" class="form-control" id="username_sign_up" placeholder="Username">
+                                </div>
                             </div>
-                        </div>  
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="username_sign_up">Username:</label>
-                            <div class="col-sm-6">
-                              <input type="text" class="form-control" id="username_sign_up" placeholder="Last Name">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="password_sign_up">Password:</label>
+                                <div class="col-sm-6">
+                                    <input id="password_sign_up" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="password_sign_up">Password:</label>
-                            <div class="col-sm-6">
-                                <input id="password_sign_up" class="form-control" placeholder="Password" name="password" type="password" value="">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="email_sign_up">Email:</label>
+                                <div class="col-sm-6">
+                                    <input id="email_sign_up" class="form-control" placeholder="Email" name="password" type="text" value="">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="email_sign_up">Email:</label>
-                            <div class="col-sm-6">
-                                <input id="email_sign_up" class="form-control" placeholder="Password" name="password" type="text" value="">
-                            </div>
-                        </div>
-                        <center><a style="width: 40%" href="javascript:do_signup()" class="btn btn-sm btn-success btn-block">Sign Up</a><center>                        
-                    </fieldset>
-                </form>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="javascript:do_signup()" data-dismiss="modal">Sign Up</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+{% endif %}
 </body>
 </html>

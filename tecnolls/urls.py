@@ -10,6 +10,9 @@ urlpatterns = [
     url(r'^users/signup$', views.signup, name='signup'),
     url(r'^users/main$', views.users_main, name='users_main'),
     url(r'^users/filter$', views.users_filter, name='users_filter'),
+    url(r'^users/profile$', views.users_profile, name='users_profile'),
+    url(r'^users/update$', views.users_update, name='users_update'),
+    url(r'^users/activate$', views.users_activate, name='users_activate'),
     
     url(r'^info/main$', views.show_info, name='show_info'),
     

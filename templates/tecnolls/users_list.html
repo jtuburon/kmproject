@@ -40,6 +40,7 @@
                             <th>Name</th>
                             <th>Lastname</th>
                             <th>Email</th>
+                            <th>Active</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,6 +51,18 @@
                             <td style="font-size:12px;">{{u.first_name}}</td>
                             <td style="font-size:12px;">{{u.last_name}}</td>
                             <td style="font-size:12px;">{{u.email}}</td>
+                            <td style="font-size:12px;">
+                              <input type="checkbox" id="user-active-{{u.username}}"  data-size="mini" {% if u.is_active %}checked {% endif %}>
+                              <script type="text/javascript">
+                                $("#user-active-{{u.username}}").bootstrapSwitch();
+                                $("#user-active-{{u.username}}").on('switchChange.bootstrapSwitch', 
+                                  function(event, state) {
+                                    activate_user('{{u.username}}', state);
+                                  }
+                                );
+                              </script>
+
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
