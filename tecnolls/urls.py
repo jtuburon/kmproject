@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^users/profile$', views.users_profile, name='users_profile'),
     url(r'^users/update$', views.users_update, name='users_update'),
     url(r'^users/activate$', views.users_activate, name='users_activate'),
+    url(r'^users/set_admin$', views.users_set_admin, name='users_set_admin'),
     
     url(r'^info/main$', views.show_info, name='show_info'),
     

@@ -176,6 +176,22 @@ function activate_user(username, state){
 	});
 }
 
+function set_user_admin(username, state){
+	data = {username: username, state: state}
+	$.ajax({
+	    type: "POST",
+	    url: "users/set_admin",
+	    dataType: "json",
+	    data: data,
+	    success: function (response) {
+			
+	    },
+	    error: function (request, status, err) {
+	    	console.log(err);
+	    }
+	});
+}
+
 
 /*
 -------------------------------------------------

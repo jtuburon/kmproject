@@ -103,6 +103,17 @@ def users_activate(request):
 	return JsonResponse({'status': 1, "msg": "User Activation action applied succesfully"})
 
 @csrf_exempt
+def users_set_admin(request):
+	username= request.POST.get('username', '')
+	state= request.POST.get('state', '')
+	user = User.objects.get(username=username)
+	user.is_superuser=True if state=="true" else False
+	print user.is_superuser
+	user.save()
+	return JsonResponse({'status': 1, "msg": "User is now an admin"})
+
+
+@csrf_exempt
 def users_filter(request):
 	filter_type= request.POST.get('filter_type', '')
 	filter_text= request.POST.get('filter_text', '')
